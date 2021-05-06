@@ -1,0 +1,79 @@
+// Bootstrap 5.0 Beta Custom SCSS
+
+/*SASS Customization Summary…
+1- First, our custom values are set in custom.scss, will override any of the variables that had !default values set in 
+    Bootstrap _variables.scss.
+2- Then, Bootstrap is imported (@import "bootstrap") which enables the SASS compiler to generate all the appropriate 
+    CSS using both the Bootstrap defaults, and the custom overrides.
+3- Finally, Any additional custom classes that @extend Bootstrap classes can be defined after the @import "bootstrap". 
+    These are added in the generated CSS after the customized Bootstrap classes from step 2.*/
+
+///////////////////////// 1: Variable customization.  ////////////////////
+
+$white: #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black: #000 !default;
+
+// fusv-disable
+$grays: ( "100": $gray-100, "200": $gray-200, "300": $gray-300, "400": $gray-400, "500": $gray-500, "600": $gray-600, "700": $gray-700, "800": $gray-800, "900": $gray-900 ) !default;
+// fusv-enable
+
+$blue: #0d6efd !default;
+$indigo: #6610f2 !default;
+$purple: #6f42c1 !default;
+$pink: #d63384 !default;
+$red: #dc3545 !default;
+$orange: #fd7e14 !default;
+$yellow: #ffc107 !default;
+$green: #198754 !default;
+$teal: #20c997 !default;
+$cyan: #0dcaf0 !default;
+$brown: #D3BFAB !default;
+
+// scss-docs-start colors-map
+$colors: ( "blue": $blue, "indigo": $indigo, "purple": $purple, "pink": $pink, "red": $red, "orange": $orange, "yellow": $yellow, "green": $green, "teal": $teal, "cyan": $cyan, "white": $white, "gray": $gray-600, "gray-dark": $gray-800, "brown": $brown) !default;
+// scss-docs-end colors-map
+
+$primary: #3AAFA9 !default;
+$secondary: #2A7A78 !default;
+$success: $green !default;
+$info: $brown !default;
+$warning: $yellow !default;
+$danger: $red !default;
+$light: #DEF2F1 !default;
+$dark: #17242A !default;
+$darkest: #000000 !default;
+
+// scss-docs-start theme-colors-map
+$theme-colors: ( "primary": $primary, "secondary": $secondary, "success": $success, "info": $info, "warning": $warning, "danger": $danger, "light": $light, "dark": $dark, "darkest": $darkest ) !default;
+// scss-docs-end theme-colors-map 
+
+// Body
+.body-bg-image {
+    background: url('../images/brownwood.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.bg-filter {
+    background-color: rgba(255, 255, 255, .50);
+    backdrop-filter: blur(5px);
+}
+
+// 2: Import Bootstrap 
+@import "../scss/bootstrap.scss";
+
+///////////////////////// 3: Extend Bootstrap /////////////////////////////
+// Example:
+/*.row-dark {
+    @extend .row;
+    background-color: #333;
+    color: #eee;
+}*/

@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WDP.Areas.Identity.Data
+@using Microsoft.AspNetCore.Authorization
+
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject IAuthorizationService AuthorizationService
+
+@{
+    var roleviewcheck = await AuthorizationService.AuthorizeAsync(User, "ViewRoles");
+    var userviewcheck = await AuthorizationService.AuthorizeAsync(User, "ViewUsers");
+
+}
+
+<ul class="navbar-nav me-0 mb-2 mb-lg-0">
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item dropdown">
+            <a id="navbarDropdown" href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" title="Manage" aria-expanded="false">@UserManager.GetUserName(User)</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a id="navbarDropdown" class="dropdown-item" role="button" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account</a></li>
+                @if (roleviewcheck.Succeeded) //AuthorizeAsync(User, "ViewRoles"))
+                {
+                    <li><a class="dropdown-item" asp-area="Identity" asp-page="/Admin/Roles/Index" title="Roles">View Roles</a></li>
+                }
+                @if (userviewcheck.Succeeded)
+                {
+                    <li><a class="dropdown-item" asp-area="Identity" asp-page="/Admin/Users/Index" title="Roles">View Users</a></li>
+                    }
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item nav">
+            <a class="nav-link text-black-50" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-black-50" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
+</ul>

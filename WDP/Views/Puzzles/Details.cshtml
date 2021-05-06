@@ -1,0 +1,291 @@
+﻿@model BL.Puzzle
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var quotient = Int32.Parse(Model.Quotient);
+    var sQuotient = Model.Quotient;    
+    var divisor = Int32.Parse(Model.Divisor);
+    var dividend = quotient * divisor;
+
+    var cols = dividend.ToString().Length + Model.Divisor.Length; // How many colums do we need?
+    var letters = Model.Letters.ToCharArray();
+    var qOffset = Model.Divisor.Length + (dividend.ToString().Length - Model.Quotient.Length);
+    var iQ = 0;
+    var iDb = 0;
+}
+
+<div class="row">
+    <div class="col-8">
+
+        @*Row Quotient*@
+        <div class="row gx-0">
+            @for (var i = 0; i < cols; i++)
+            {
+
+                if (i < qOffset)
+                {
+                    <div class="col"></div>
+                }
+
+                if (i >= qOffset)
+                {
+
+                    var q = Model.Quotient.Substring(iQ, 1);
+                    iQ = iQ + 1;
+
+                    <div class="col text-center">
+
+                        @q
+
+                    </div>
+                }
+            }
+        </div>
+
+        @*Row Divisor and Dividend*@
+        <div class="row gx-0">
+
+            @for (var i = 0; i < cols; i++)
+             {
+                    if (i < Model.Divisor.Length)
+                    {
+                        var dA = Model.Divisor.Substring(i, 1);
+                        <div class="col text-center">
+                            @dA
+                        </div>
+                    }
+
+                    if (i >= Model.Divisor.Length)
+                    {
+                        var dB = dividend.ToString().Substring(iDb, 1);
+                        iDb = iDb + 1;
+                        if (i == Model.Divisor.Length)
+                        {
+                            <div class="col border border-2  border-bottom-0 border-end-0 border-darkest text-center">
+                                @dB
+                            </div>
+                        }
+                        else
+                        {
+
+                            <div class="col border border-2 border-end-0 border-bottom-0 border-start-0 border-darkest text-center">
+                                @dB
+                            </div>
+                        }
+                    }
+             }
+
+        </div>
+
+
+        @* Hopefully the rest *@
+
+        @{
+
+            var loopCount = 0; // if the loop exceeds 20, exit loop.
+            int product = 0; // mult * divisor
+            int mult = 0; // dend / divisor
+            int dend = 1; // nitially, get dend from the dividend, then once in the loop get dend from the difference of the dend and product
+
+            int difference = 1;
+            var iCol = divisor.ToString().Length;
+            var divisorTest = Int32.Parse(dividend.ToString().Substring(0, divisor.ToString().Length));
+
+            var sDividend = dividend.ToString();
+
+            if (divisor <= Int32.Parse(dividend.ToString().Substring(0, divisor.ToString().Length)))
+            {
+                dend = Int32.Parse(dividend.ToString().Substring(0, divisor.ToString().Length));
+
+            }
+
+            else
+            {
+                dend = Int32.Parse(dividend.ToString().Substring(0, divisor.ToString().Length + 1));
+
+            }
+
+            mult = dend / divisor;
+            sDividend = sDividend.TrimStart(dend.ToString().ToCharArray()).ToString();
+
+
+
+
+
+
+
+
+
+
+
+
+
+            ///////////////// WHILE ////////////////////////////////
+            while (loopCount < dividend.ToString().Length && difference !=0)
+            {
+
+                loopCount++;
+                product = mult * divisor;
+                difference = dend - product;
+                Console.WriteLine(dend + "    dend");
+                Console.WriteLine(sDividend + "    sDividend");
+
+                int productIndex = 0;
+
+                if (product.ToString().Length < dend.ToString().Length)
+                {
+                    iCol++;
+                }
+
+                // Get the first of the two repeated rows
+                <div class="row gx-0">
+                    @for (var i = 0; i < cols; i++)
+                    {
+                        if (i < iCol)
+                        {
+
+                            if (i == iCol - 1)
+                            {
+
+                                    <div class="col text-end">-</div>
+
+                            }
+                            else
+                            {
+
+                                    <div class="col text-center"></div>
+                            }
+
+                        }
+
+                        if (i >= iCol)
+                        {
+                            if (product.ToString().Length <= dend.ToString().Length)
+                            {
+
+                                if (productIndex < product.ToString().Length)
+                                {
+                                        <div class="col text-center border-2 border-bottom border-darkest">@product.ToString().Substring(productIndex, 1)</div>
+                                }
+                                else
+                                {
+                                        <div class="col text-center"></div>
+                                }
+
+                                    productIndex++;
+                           
+                            }
+                        }
+                    }
+
+                </div>
+
+
+
+                // Placed here as it needs to be after the above for loop.
+                // Shift the col to the right if there is a length difference between product and difference.
+                var c = 0;
+                for(c = 0; c < product.ToString().Length - difference.ToString().Length; c++)
+                {
+                    iCol++;
+
+                }
+
+
+
+                dend = Int32.Parse(difference.ToString() + sDividend.Substring(0, 1));
+
+                if (dend < divisor)
+                {
+                    dend = Int32.Parse(difference.ToString() + sDividend.Substring(0, 2));
+                    
+                }
+                if (dend < divisor)
+                {
+                    dend = Int32.Parse(difference.ToString() + sDividend.Substring(0, 3));
+    
+                }
+
+
+
+
+
+
+
+                // Get the second of the two repeated rows.
+
+    <div class="row gx-0">
+
+
+        @for (var i = 0; i < cols; i++)
+        {
+
+            if (difference != 0)
+            {
+
+                if (i < iCol - 1)
+                {
+                    <div class="col text-center"></div>
+                }
+                if (i == iCol - 1)
+                {
+                    <div class="col text-center"></div>
+                }
+
+                if (i >= iCol)
+                {
+                    if ((i - iCol) < dend.ToString().Length)
+                    {
+                        <div class="col text-center">@dend.ToString().Substring(i - iCol, 1)</div>
+                        @*<div class="col text-center">@dend</div>*@
+                    }
+                    else if ((i - iCol) == dend.ToString().Length)
+                    {
+                        <div class="col text-center"></div>
+                        sDividend = sDividend.Substring(1);
+                    }
+                    else
+                    {
+                        <div class="col text-center"></div>
+                    }
+
+                }
+
+            }
+
+            else
+            {
+                if (i == cols - 1)
+                {
+                    <div class="col text-center">0</div>
+                }
+                else
+                {
+                    <div class="col text-center"></div>
+                }
+
+            }
+        }
+
+    </div>
+
+         
+                mult = dend / divisor;
+           
+
+            }
+
+        }
+    </div>
+
+    <div class="col-4">
+        <div class="row">
+            <div class="col">test</div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
