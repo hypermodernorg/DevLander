@@ -88,13 +88,14 @@
             string difference = "";
             int emptyColumns = divisor.Length;
             int dividendPosition = 0;
+            
 
 
             // for the number of the quotient length
             for (int i = 0; i < quotient.Length; i++)
             {
                 <div class="row">
-                    @{  // print the subtrahend
+                    @{ // print the subtrahend
                         multiplier = Int32.Parse(quotient.Substring(i, 1)); // This is one of the numbers in the quotient (the top most long division number)
                         product = multiplier * Int32.Parse(divisor); // The product of the multiplier and the divisor.
                         subtrahend = product; // minuend - subtrahend = difference
@@ -102,38 +103,111 @@
                         // lets figure out the minuend
                         // As long as the divisor is less than the minuend, continue pulling down from the dividend.
                         // Also keep track of the dividend position for later.
-                        while(Int32.Parse(divisor) > Int32.Parse(minuend))
+                        if (i == 0)
                         {
-                            minuend = difference + dividend.ToString().Substring(dividendPosition, 1);
+                            minuend = minuend + dividend.ToString().Substring(0, 1);
                             dividendPosition++;
+                        }
+
+                        while (Int32.Parse(divisor) > Int32.Parse(minuend))
+                        {
+
+                            minuend = minuend + dividend.ToString().Substring(dividendPosition, 1);
+
+
+                            dividendPosition++;
+                            Console.WriteLine("runaway? a");
 
                         }
-                        difference = (Int32.Parse(minuend) - subtrahend).ToString();
+
+                        for (int m = 0; m < minuend.Length - subtrahend.ToString().Length; m++)
+                        {
+                            emptyColumns++;
+                        }
 
 
+
+                        int k = 0; // subtrahend position counter for substring
                         for (int j = 0; j < totalColumns; j++)
                         {
-
                             // subtrahend   ie product   here
 
+                            if (j < emptyColumns - 1)
+                            {
+                                <div class="col text-center"></div>
+                            }
+                            else if (j == emptyColumns - 1)
+                            {
+                                <div class="col text-center">-</div>
+                            }
+                            else if (j > emptyColumns && j <= emptyColumns + subtrahend.ToString().Length)
+                            {
+                                <div class="col text-center border-2 border-bottom border-darkest">@subtrahend.ToString().Substring(k, 1)</div>
+                                k++; // subtrahend position counter for substring
+                            }
 
-
-
+                            else if (j> emptyColumns + subtrahend.ToString().Length)
+                            {
+                                <div class="col text-center">+</div>
+                            }
+                            else
+                            {
+                                <div class="col text-center">++</div>
+                            }
                         }
 
-                       
                     }
                 </div>
 
 
                 <div class="row">
-                    @{ 
+                    @{
 
+
+
+                        difference = (Int32.Parse(minuend) - subtrahend).ToString();
+                        minuend = difference;
+
+                        for (int m = 0; m < subtrahend.ToString().Length - difference.ToString().Length; m++)
+                        {
+                            emptyColumns++;
+                        }
+
+                        Console.WriteLine("Difference:  " + difference);
+                        Console.WriteLine("Quotient Length:  " + i);
+
+                        if(i!= quotient.Length-1)
+                        {
+                            while (Int32.Parse(divisor) > Int32.Parse(minuend))
+                            {
+                                Console.WriteLine("Minuend:  " + minuend);
+                                Console.WriteLine("Dividend Position::  " + dividendPosition);
+                                minuend = minuend + dividend.ToString().Substring(dividendPosition, 1);
+                                dividendPosition++;
+
+                            }
+                        }
+
+
+
+
+                        k = 0;
                         for (int j = 0; j < totalColumns; j++)
                         {
-
-
                             // minuend ie  difference + dividend substrings here
+                            if (j < emptyColumns)
+                            {
+                                <div class="col text-center"></div>
+                            }
+                            else if (j >= emptyColumns && j < emptyColumns + minuend.Length)
+                            {
+                                <div class="col text-center">@minuend.Substring(k, 1)</div>
+                                k++;
+                            }
+                            else
+                            {
+                                <div class="col text-center"></div>
+                            }
 
 
 
