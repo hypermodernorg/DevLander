@@ -44,6 +44,24 @@ namespace WDP.Controllers
             return View(puzzle);
         }
 
+        // GET: Puzzles/Details/5
+        public async Task<IActionResult> Details2(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var puzzle = await _context.Puzzles
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (puzzle == null)
+            {
+                return NotFound();
+            }
+
+            return View(puzzle);
+        }
+
         public string MakeLetters()
         {
             Random rand = new Random();

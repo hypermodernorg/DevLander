@@ -1,0 +1,179 @@
+﻿@model BL.Puzzle
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string quotient = Model.Quotient;
+    string divisor = Model.Divisor;
+    string dividend = (Int32.Parse(quotient) * Int32.Parse(divisor)).ToString();
+    string letters = Model.Letters; // The letters to replace the numbers in order of 0-9
+    int totalColumns = divisor.Length + dividend.Length; // the total number of columns
+
+}
+
+<div class="row">
+
+
+    @* Main Col *@
+    <div class="col-lg-8">
+
+    @* --------------------- Quotient Row ------------------ *@
+    <div class="row">
+        @{ 
+            int quotientStart = (totalColumns - quotient.Length);
+
+
+            for(int i=0; i<totalColumns; i++)
+            {
+                if(i<quotientStart)
+                {
+                    <div class="col text-center"></div>
+                }
+                else
+                {
+                    <div class="col text-center">@quotient.Substring(i - quotientStart,1)</div>
+                    Console.WriteLine("Quotient Row:  " + @quotient.Substring(i - quotientStart, 1) + "  " + quotient);
+                }
+            }
+        }
+
+    </div>
+
+
+
+    @* --------------- Divisor & Dividend Row ----------------*@
+    <div class="row">
+        @{
+            for (int i = 0; i < divisor.Length; i++)
+            {
+                <div class="col text-center">@divisor.Substring(i, 1)</div>
+            }
+            for (int i = 0; i < dividend.Length; i++)
+            {
+                if (i == 0)
+                {
+                    <div class="col text-center border-2 border-top border-start border-darkest">@dividend.Substring(i, 1)</div>
+                }
+                else
+                {
+                    <div class="col text-center border-2 border-top border-darkest">@dividend.Substring(i, 1)</div>
+                }
+
+
+
+            }
+
+        }
+
+    </div>
+
+
+
+        @* --------------------- The rest ------------------------*@
+
+        @{
+            // This is the hard part as we are attempting to print the rest of the long division problem recursively
+            // 1. The first number of columns equal to the length of the divisor will almost always be empty columns
+            //      The exception to the above is the first row which needs a subtraction sign.
+            // 2. Need a while loop that exits when the difference is zero or a arbitrary number to prevent infinit loop.
+            //      The difference being zero much be qualified as having no available dividend pulldowns.
+
+            // Instead of a while loop, lets explore a for loop driven by quotient length
+
+            int multiplier = 0;
+            int product = 0;
+            int subtrahend = 0;
+            string minuend = "";
+            string difference = "";
+            int emptyColumns = divisor.Length;
+            int dividendPosition = 0;
+
+
+            // for the number of the quotient length
+            for (int i = 0; i < quotient.Length; i++)
+            {
+                <div class="row">
+                    @{  // print the subtrahend
+                        multiplier = Int32.Parse(quotient.Substring(i, 1)); // This is one of the numbers in the quotient (the top most long division number)
+                        product = multiplier * Int32.Parse(divisor); // The product of the multiplier and the divisor.
+                        subtrahend = product; // minuend - subtrahend = difference
+
+                        // lets figure out the minuend
+                        // As long as the divisor is less than the minuend, continue pulling down from the dividend.
+                        // Also keep track of the dividend position for later.
+                        while(Int32.Parse(divisor) > Int32.Parse(minuend))
+                        {
+                            minuend = difference + dividend.ToString().Substring(dividendPosition, 1);
+                            dividendPosition++;
+
+                        }
+                        difference = (Int32.Parse(minuend) - subtrahend).ToString();
+
+
+                        for (int j = 0; j < totalColumns; j++)
+                        {
+
+                            // subtrahend   ie product   here
+
+
+
+
+                        }
+
+                       
+                    }
+                </div>
+
+
+                <div class="row">
+                    @{ 
+
+                        for (int j = 0; j < totalColumns; j++)
+                        {
+
+
+                            // minuend ie  difference + dividend substrings here
+
+
+
+                        }
+                    }
+
+
+                </div>
+
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    @* Side Col *@
+    <div class="col-lg-4">
+
+    </div>
+</div>
+
+
