@@ -88,6 +88,15 @@ namespace WDP.Controllers
             aPuzzle.Letters = MakeLetters(); // Get the string of letters.
             aPuzzle.Divisor = rand.Next(99, 999).ToString();
             aPuzzle.Quotient = rand.Next(10000, 99999).ToString();
+
+            // Seems like most of the remaining  problems are solved just by eliminating the possibility of having,
+            //      zeros in the quotient. The below removes the 0 possibility.
+            while (aPuzzle.Quotient.ToString().Contains("0"))
+            {
+                aPuzzle.Quotient = rand.Next(10000, 99999).ToString();
+            }
+
+
             aPuzzle.Created = DateTime.Now;
             
             if (ModelState.IsValid)

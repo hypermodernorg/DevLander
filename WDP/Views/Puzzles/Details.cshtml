@@ -3,289 +3,262 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var quotient = Int32.Parse(Model.Quotient);
-    var sQuotient = Model.Quotient;    
-    var divisor = Int32.Parse(Model.Divisor);
-    var dividend = quotient * divisor;
 
-    var cols = dividend.ToString().Length + Model.Divisor.Length; // How many colums do we need?
-    var letters = Model.Letters.ToCharArray();
-    var qOffset = Model.Divisor.Length + (dividend.ToString().Length - Model.Quotient.Length);
-    var iQ = 0;
-    var iDb = 0;
+    string quotient = Model.Quotient;
+    string divisor = Model.Divisor;
+    string dividend = (Int32.Parse(quotient) * Int32.Parse(divisor)).ToString();
+    string letters = Model.Letters; // The letters to replace the numbers in order of 0-9
+    int totalColumns = divisor.Length + dividend.Length; // the total number of columns
+    string converted = "";
+
+}
+
+@functions {
+
+    // function to convert letters to numbers
+    // change bool to false to prevent conversion for testing purposes.
+    public string ConvertToLetter(string aNumber, string letters)
+    {
+        bool change = true;
+        string changed = aNumber;
+
+        if (change== true)
+        {
+            changed = letters[Int32.Parse(aNumber)].ToString();
+        }
+
+        return changed;
+
+
+    }
+
+
 }
 
 <div class="row">
-    <div class="col-8">
 
-        @*Row Quotient*@
-        <div class="row gx-0">
-            @for (var i = 0; i < cols; i++)
+
+    @* Main Col *@
+    <div class="col-lg-8">
+
+    @* --------------------- Quotient Row ------------------ *@
+    <div class="row">
+        @{ 
+            int quotientStart = (totalColumns - quotient.Length);
+
+
+            for(int i=0; i<totalColumns; i++)
             {
-
-                if (i < qOffset)
-                {
-                    <div class="col"></div>
-                }
-
-                if (i >= qOffset)
-                {
-
-                    var q = Model.Quotient.Substring(iQ, 1);
-                    iQ = iQ + 1;
-
-                    <div class="col text-center">
-
-                        @q
-
-                    </div>
-                }
-            }
-        </div>
-
-        @*Row Divisor and Dividend*@
-        <div class="row gx-0">
-
-            @for (var i = 0; i < cols; i++)
-             {
-                    if (i < Model.Divisor.Length)
-                    {
-                        var dA = Model.Divisor.Substring(i, 1);
-                        <div class="col text-center">
-                            @dA
-                        </div>
-                    }
-
-                    if (i >= Model.Divisor.Length)
-                    {
-                        var dB = dividend.ToString().Substring(iDb, 1);
-                        iDb = iDb + 1;
-                        if (i == Model.Divisor.Length)
-                        {
-                            <div class="col border border-2  border-bottom-0 border-end-0 border-darkest text-center">
-                                @dB
-                            </div>
-                        }
-                        else
-                        {
-
-                            <div class="col border border-2 border-end-0 border-bottom-0 border-start-0 border-darkest text-center">
-                                @dB
-                            </div>
-                        }
-                    }
-             }
-
-        </div>
-
-
-        @* Hopefully the rest *@
-
-        @{
-
-            var loopCount = 0; // if the loop exceeds 20, exit loop.
-            int product = 0; // mult * divisor
-            int mult = 0; // dend / divisor
-            int dend = 1; // nitially, get dend from the dividend, then once in the loop get dend from the difference of the dend and product
-
-            int difference = 1;
-            var iCol = divisor.ToString().Length;
-            var divisorTest = Int32.Parse(dividend.ToString().Substring(0, divisor.ToString().Length));
-
-            var sDividend = dividend.ToString();
-
-            if (divisor <= Int32.Parse(dividend.ToString().Substring(0, divisor.ToString().Length)))
-            {
-                dend = Int32.Parse(dividend.ToString().Substring(0, divisor.ToString().Length));
-
-            }
-
-            else
-            {
-                dend = Int32.Parse(dividend.ToString().Substring(0, divisor.ToString().Length + 1));
-
-            }
-
-            mult = dend / divisor;
-            sDividend = sDividend.TrimStart(dend.ToString().ToCharArray()).ToString();
-
-
-
-
-
-
-
-
-
-
-
-
-
-            ///////////////// WHILE ////////////////////////////////
-            while (loopCount < dividend.ToString().Length && difference !=0)
-            {
-
-                loopCount++;
-                product = mult * divisor;
-                difference = dend - product;
-                Console.WriteLine(dend + "    dend");
-                Console.WriteLine(sDividend + "    sDividend");
-
-                int productIndex = 0;
-
-                if (product.ToString().Length < dend.ToString().Length)
-                {
-                    iCol++;
-                }
-
-                // Get the first of the two repeated rows
-                <div class="row gx-0">
-                    @for (var i = 0; i < cols; i++)
-                    {
-                        if (i < iCol)
-                        {
-
-                            if (i == iCol - 1)
-                            {
-
-                                    <div class="col text-end">-</div>
-
-                            }
-                            else
-                            {
-
-                                    <div class="col text-center"></div>
-                            }
-
-                        }
-
-                        if (i >= iCol)
-                        {
-                            if (product.ToString().Length <= dend.ToString().Length)
-                            {
-
-                                if (productIndex < product.ToString().Length)
-                                {
-                                        <div class="col text-center border-2 border-bottom border-darkest">@product.ToString().Substring(productIndex, 1)</div>
-                                }
-                                else
-                                {
-                                        <div class="col text-center"></div>
-                                }
-
-                                    productIndex++;
-                           
-                            }
-                        }
-                    }
-
-                </div>
-
-
-
-                // Placed here as it needs to be after the above for loop.
-                // Shift the col to the right if there is a length difference between product and difference.
-                var c = 0;
-                for(c = 0; c < product.ToString().Length - difference.ToString().Length; c++)
-                {
-                    iCol++;
-
-                }
-
-
-
-                dend = Int32.Parse(difference.ToString() + sDividend.Substring(0, 1));
-
-                if (dend < divisor)
-                {
-                    dend = Int32.Parse(difference.ToString() + sDividend.Substring(0, 2));
-                    
-                }
-                if (dend < divisor)
-                {
-                    dend = Int32.Parse(difference.ToString() + sDividend.Substring(0, 3));
-    
-                }
-
-
-
-
-
-
-
-                // Get the second of the two repeated rows.
-
-    <div class="row gx-0">
-
-
-        @for (var i = 0; i < cols; i++)
-        {
-
-            if (difference != 0)
-            {
-
-                if (i < iCol - 1)
+                if(i<quotientStart)
                 {
                     <div class="col text-center"></div>
-                }
-                if (i == iCol - 1)
-                {
-                    <div class="col text-center"></div>
-                }
-
-                if (i >= iCol)
-                {
-                    if ((i - iCol) < dend.ToString().Length)
-                    {
-                        <div class="col text-center">@dend.ToString().Substring(i - iCol, 1)</div>
-                        @*<div class="col text-center">@dend</div>*@
-                    }
-                    else if ((i - iCol) == dend.ToString().Length)
-                    {
-                        <div class="col text-center"></div>
-                        sDividend = sDividend.Substring(1);
-                    }
-                    else
-                    {
-                        <div class="col text-center"></div>
-                    }
-
-                }
-
-            }
-
-            else
-            {
-                if (i == cols - 1)
-                {
-                    <div class="col text-center">0</div>
                 }
                 else
                 {
-                    <div class="col text-center"></div>
+                    converted = ConvertToLetter(quotient.Substring(i - quotientStart, 1), letters);
+                    <div class="col text-center">@converted</div>
+                    Console.WriteLine("Quotient Row:  " + @quotient.Substring(i - quotientStart, 1) + "  " + quotient);
+                }
+            }
+        }
+
+    </div>
+
+
+
+    @* --------------- Divisor & Dividend Row ----------------*@
+    <div class="row">
+        @{
+            for (int i = 0; i < divisor.Length; i++)
+            {
+                converted = ConvertToLetter(divisor.Substring(i, 1), letters);
+                <div class="col text-center">@converted</div>
+            }
+            for (int i = 0; i < dividend.Length; i++)
+            {
+                if (i == 0)
+                {
+                    converted = ConvertToLetter(dividend.Substring(i, 1), letters);
+                    <div class="col text-center border-2 border-top border-start border-darkest">@converted</div>
+                }
+                else
+                {
+                    converted = ConvertToLetter(dividend.Substring(i, 1), letters);
+                    <div class="col text-center border-2 border-top border-darkest">@converted</div>
                 }
 
+
+
             }
+
         }
 
     </div>
 
-         
-                mult = dend / divisor;
+
+
+        @* --------------------- The rest ------------------------*@
+
+        @{
+            // This is the hard part as we are attempting to print the rest of the long division problem recursively
+            // 1. The first number of columns equal to the length of the divisor will almost always be empty columns
+            //      The exception to the above is the first row which needs a subtraction sign.
+            // 2. Need a while loop that exits when the difference is zero or a arbitrary number to prevent infinit loop.
+            //      The difference being zero much be qualified as having no available dividend pulldowns.
+
+            // Instead of a while loop, lets explore a for loop driven by quotient length
+
+            int multiplier = 0;
+            int product = 0;
+            int subtrahend = 0;
+            string minuend = "";
+            string difference = "";
+            int emptyColumns = divisor.Length;
+            int dividendPosition = 0;
            
+            
+
+
+            // for the number of the quotient length
+            for (int i = 0; i < quotient.Length; i++)
+            {
+                <div class="row">
+                    @{ // print the subtrahend
+                        multiplier = Int32.Parse(quotient.Substring(i, 1)); // This is one of the numbers in the quotient (the top most long division number)
+                        product = multiplier * Int32.Parse(divisor); // The product of the multiplier and the divisor.
+                        subtrahend = product; // minuend - subtrahend = difference
+
+                        // lets figure out the minuend
+                        // As long as the divisor is less than the minuend, continue pulling down from the dividend.
+                        // Also keep track of the dividend position for later.
+                        if (i == 0)
+                        {
+                            minuend = minuend + dividend.ToString().Substring(0, 1);
+                            dividendPosition++;
+                        }
+
+                        while (Int32.Parse(divisor) > Int32.Parse(minuend))
+                        {
+
+                            minuend = minuend + dividend.ToString().Substring(dividendPosition, 1);
+                            dividendPosition++;
+                            Console.WriteLine("runaway? a");
+
+                        }
+
+                        for (int m = 0; m < minuend.Length - subtrahend.ToString().Length; m++)
+                        {
+                            emptyColumns++;
+                        }
+             
+
+
+
+
+                        int k = 0; // subtrahend position counter for substring
+                        for (int j = 0; j < totalColumns; j++)
+                        {
+                            // subtrahend   ie product   here
+
+                            if (j < emptyColumns - 1)
+                            {
+                                <div class="col text-center"></div>
+                            }
+                            else if (j == emptyColumns -1)
+                            {
+                                <div class="col text-center">-</div>
+                            }
+                            else if (j >= emptyColumns && j < emptyColumns + subtrahend.ToString().Length)
+                            {
+                                converted = ConvertToLetter(subtrahend.ToString().Substring(k, 1), letters);
+                                <div class="col text-center border-2 border-bottom border-darkest">@converted</div>
+                                k++; // subtrahend position counter for substring
+                            }
+
+                            @*else if (j> emptyColumns + subtrahend.ToString().Length)
+                            {
+                                <div class="col text-center"></div>
+                            }*@
+                            else
+                            {
+                                <div class="col text-center"></div>
+                            }
+                        }
+
+                    }
+                </div>
+
+
+                <div class="row">
+                    @{
+
+
+
+                        difference = (Int32.Parse(minuend) - subtrahend).ToString();
+                        minuend = difference;
+
+                        for (int m = 0; m < subtrahend.ToString().Length - difference.ToString().Length; m++)
+                        {
+                            emptyColumns++;
+                        }
+
+                        Console.WriteLine("Difference:  " + difference);
+                        Console.WriteLine("Quotient Length:  " + i);
+
+                        if(i!= quotient.Length-1)
+                        {
+
+                            while (Int32.Parse(divisor) > Int32.Parse(minuend))
+                            {
+                                Console.WriteLine("Minuend:  " + minuend);
+                                Console.WriteLine("Dividend Position::  " + dividendPosition);
+                                minuend = minuend + dividend.ToString().Substring(dividendPosition, 1);
+                                dividendPosition++;
+
+                            }
+
+                        }
+
+
+
+
+                        k = 0;
+                        for (int j = 0; j < totalColumns; j++)
+                        {
+                            // minuend ie  difference + dividend substrings here
+                            if (j < emptyColumns)
+                            {
+                                <div class="col text-center"></div>
+                            }
+                            else if (j >= emptyColumns && j < emptyColumns + minuend.Length)
+                            {
+                                converted = ConvertToLetter(minuend.Substring(k, 1), letters);
+
+                                <div class="col text-center">@converted</div>
+                                k++;
+                            }
+                            else
+                            {
+                                <div class="col text-center"></div>
+                            }
+
+
+
+                        }
+                    }
+
+
+                </div>
 
             }
-
         }
+
     </div>
 
-    <div class="col-4">
-        <div class="row">
-            <div class="col">test</div>
-        </div>
+    @* Side Col *@
+    <div class="col-lg-4">
+
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
