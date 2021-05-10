@@ -17,6 +17,7 @@
 
     // function to convert letters to numbers
     // change bool to false to prevent conversion for testing purposes.
+    // May later convert this to an admin uer option.
     public string ConvertToLetter(string aNumber, string letters)
     {
         bool change = true;
@@ -28,8 +29,6 @@
         }
 
         return changed;
-
-
     }
 
 
@@ -174,11 +173,6 @@
                                 <div class="col text-center border-2 border-bottom border-darkest">@converted</div>
                                 k++; // subtrahend position counter for substring
                             }
-
-                            @*else if (j> emptyColumns + subtrahend.ToString().Length)
-                            {
-                                <div class="col text-center"></div>
-                            }*@
                             else
                             {
                                 <div class="col text-center"></div>
@@ -251,13 +245,86 @@
                 </div>
 
             }
-        }
+
+
+}
 
     </div>
 
     @* Side Col *@
     <div class="col-lg-4">
+        <div class="row">
+            @{
+                // User input: First lets shuffle the letters
+                var shuffleLetters = "";
+                {
+                    Random rand = new Random();
+                    var alphebet = letters.ToCharArray().ToList();
 
+                    for (int i = 0; i < 10; i++) // Get 9 letters
+                    {
+                        var n = rand.Next(0, 10 - i); // Get a random letter, decreasing number of available letters each time by 1.
+                        shuffleLetters += alphebet[n]; // Add the letter to the string of letters
+                        alphebet.Remove(alphebet[n]); //Remove letter so it cannot be selected again.
+                    }
+                }
+
+                for (int i = 0; i < shuffleLetters.Length; i++)
+                {
+                    if (i < 5)
+                    {
+                        <div class="col-6">
+                            <div class="input-group mb-3">
+                                <label class="input-group-text" for="inputGroupSelect01">@shuffleLetters.Substring(i, 1)</label>
+                                <select class="form-select" id="inputGroupSelect01">
+                                    <option selected>Choose...</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                </select>
+                            </div>
+                        </div>
+                    }
+                    if (i >= 5)
+                    {
+                        <div class="col-6">
+                            <div class="input-group mb-3">
+                                <label class="input-group-text" for="inputGroupSelect01">@shuffleLetters.Substring(i, 1)</label>
+                                <select class="form-select" id="inputGroupSelect01">
+                                    <option selected>Choose...</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    }
+
+                }
+            }
+            <div class="row">
+             
+                <div class="col text-center">
+                    <button type="button" class="btn btn-primary btn-sm mb-3">Check Answers</button>
+                </div>
+            </div>
+            
+        </div>
     </div>
 </div>
 
