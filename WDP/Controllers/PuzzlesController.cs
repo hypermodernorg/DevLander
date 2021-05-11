@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +27,30 @@ namespace WDP.Controllers
         {
             return View(await _context.Puzzles.ToListAsync());
         }
+
+
+        public struct Answer
+        {
+            public string id { get; set; }
+        }
+
+        // Check the user submitted answer
+        [HttpPost]
+        public async Task<String> Check([Bind("id")] Answer answer)
+        {
+
+            //Edit(Guid id, [Bind("Id,UId,Seed,SolvedBy,Dividend,Divisor,Quotient,Letters,Created,Solved")] Puzzle puzzle)
+            var puzzle = await _context.Puzzles
+                .FirstOrDefaultAsync(m => m.Id == Guid.Parse(answer.id));
+
+            return JsonSerializer.Serialize(puzzle);
+
+        }
+
+
+
+
+
 
         // GET: Puzzles/Details/5
         public async Task<IActionResult> Details(Guid? id)
