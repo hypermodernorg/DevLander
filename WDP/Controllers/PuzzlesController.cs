@@ -33,16 +33,55 @@ namespace WDP.Controllers
 
         // Check the user submitted answer
         [HttpPost]
-        public JsonResult Check([FromBody] Answer answer)
+        public async Task<JsonResult> Check([FromBody] Answer answer)
         {
+            var message = "";
+            bool check = true;
+            Dictionary<string, int> answerKey = new();
 
-            //Edit(Guid id, [Bind("Id,UId,Seed,SolvedBy,Dividend,Divisor,Quotient,Letters,Created,Solved")] Puzzle puzzle)
-            //var puzzle = await _context.Puzzles
-            //    .FirstOrDefaultAsync(m => m.Id == id);
+            if ( answer.one.Length==2 && answer.two.Length == 2 && answer.three.Length == 2 && answer.four.Length == 2 && answer.five.Length == 2 && answer.six.Length == 2 && answer.seven.Length == 2 && answer.eight.Length == 2 && answer.nine.Length == 2 && answer.ten.Length == 2)
+            {
+                answerKey.Add(answer.one.Substring(0, 1), Int32.Parse(answer.one.Substring(1, 1)));
+                answerKey.Add(answer.two.Substring(0, 1), Int32.Parse(answer.two.Substring(1, 1)));
+                answerKey.Add(answer.three.Substring(0, 1), Int32.Parse(answer.three.Substring(1, 1)));
+                answerKey.Add(answer.four.Substring(0, 1), Int32.Parse(answer.four.Substring(1, 1)));
+                answerKey.Add(answer.five.Substring(0, 1), Int32.Parse(answer.five.Substring(1, 1)));
+                answerKey.Add(answer.six.Substring(0, 1), Int32.Parse(answer.six.Substring(1, 1)));
+                answerKey.Add(answer.seven.Substring(0, 1), Int32.Parse(answer.seven.Substring(1, 1)));
+                answerKey.Add(answer.eight.Substring(0, 1), Int32.Parse(answer.eight.Substring(1, 1)));
+                answerKey.Add(answer.nine.Substring(0, 1), Int32.Parse(answer.nine.Substring(1, 1)));
+                answerKey.Add(answer.ten.Substring(0, 1), Int32.Parse(answer.ten.Substring(1, 1)));
 
-            //return JsonSerializer.Serialize(puzzle);
-            return Json(answer.id);
+                var puzzle = await _context.Puzzles
+                    .FirstOrDefaultAsync(m => m.Id == answer.id);
 
+                if (!string.IsNullOrEmpty(puzzle.Letters))
+                {
+                    for (int i=0; i< puzzle.Letters.Length; i++)
+                    {
+
+                        //         
+                        if ( i !=  answerKey[puzzle.Letters.Substring(i, 1)]  )
+                        {
+                            check = false;
+                        }
+                    }
+
+                    if (check) { message = "Congratulations!! You Solved the Puzzle!!"; }
+                    else { message = "Sorry, Incorrect. Please try again."; }
+                }
+                else
+                {
+                    message = "Something went wrong. Try refreshing the page.";
+                }
+
+            }
+            else
+            {
+                message = "Make sure you have filled in answers for each letter.";
+            }
+
+            return Json(message);
         }
 
 

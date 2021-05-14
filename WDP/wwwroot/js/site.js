@@ -3,29 +3,16 @@
     // Get all the elements with the class: letters
     var lettersGroup = document.getElementsByClassName("letters");
 
-    // construct json object of letter(key) number(value) pairs from all elements with the class: letters
-
-
-    var answer = {
-        id: id
-        //one: lettersGroup[0].id + "_" + lettersGroup[0].value,
-        //two: lettersGroup[1].id + "_" + lettersGroup[1].value,
-        //three: lettersGroup[2].id + "_" + lettersGroup[2].value,
-        //four: lettersGroup[3].id + "_" + lettersGroup[3].value,
-        //five: lettersGroup[4].id + "_" + lettersGroup[4].value,
-        //sex: lettersGroup[5].id + "_" + lettersGroup[5].value,
-        //seven: lettersGroup[6].id + "_" + lettersGroup[6].value,
-        //eight: lettersGroup[7].id + "_" + lettersGroup[7].value,
-        //nine: lettersGroup[8].id + "_" + lettersGroup[8].value,
-        //ten: lettersGroup[9].id + "_" + lettersGroup[9].value,
-    }
-
-
-
-
-
     // Now, lets send the object to the code behind.
     // Attempting fetch:
+
+
+    // Get and return the last letter of the string
+    function GetLetter(x) {
+         var y = x.slice(-1);
+
+        return y;
+    }
 
     fetch(`/puzzles/check/`, {
         method: 'POST',
@@ -34,16 +21,39 @@
         },
         body: JSON.stringify({
             id: id,
-            one: 'test'
+            one: GetLetter(lettersGroup[0].id) + lettersGroup[0].value,
+            two: GetLetter(lettersGroup[1].id)  + lettersGroup[1].value,
+            three: GetLetter(lettersGroup[2].id)  + lettersGroup[2].value,
+            four: GetLetter(lettersGroup[3].id)  + lettersGroup[3].value,
+            five: GetLetter(lettersGroup[4].id)  + lettersGroup[4].value,
+            six: GetLetter(lettersGroup[5].id)  + lettersGroup[5].value,
+            seven: GetLetter(lettersGroup[6].id)  + lettersGroup[6].value,
+            eight: GetLetter(lettersGroup[7].id)  + lettersGroup[7].value,
+            nine: GetLetter(lettersGroup[8].id)  + lettersGroup[8].value,
+            ten: GetLetter(lettersGroup[9].id)  + lettersGroup[9].value,
         })
     }).then(function (response) {
         if (response.ok) {
-            alert(response);
+            //alert(response);
             return response.json();
         }
         return Promise.reject(response);
     }).then(data => {
-        console.log('Success:', id);
+
+        //console.log('Success:', data);
+
+     
+            document.getElementById("messageReturned").innerHTML = data;
+
+
+        function ClearHeading() {
+            document.getElementById("messageReturned").innerHTML = "";
+        }
+
+
+
+
+        
     }).catch(function (error) {
         console.warn('BLAH BLAH BLAH', error);
     });
