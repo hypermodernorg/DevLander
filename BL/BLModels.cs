@@ -29,4 +29,18 @@ namespace BL
         public Guid Id { get; set; } // Puzzle Id
         public Puzzle Puzzle { get; set; }
     }
+    public class Answer
+    {
+        public Guid id { get; set; }
+        public string one { get; set; }
+        public string two { get; set; }
+        public string three { get; set; }
+        public string four { get; set; }
+        public string five { get; set; }
+        public string six { get; set; }
+        public string seven { get; set; }
+        public string eight { get; set; }
+        public string nine { get; set; }
+        public string ten { get; set; }
+    }
 }

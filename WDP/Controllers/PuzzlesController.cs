@@ -29,21 +29,19 @@ namespace WDP.Controllers
         }
 
 
-        public struct Answer
-        {
-            public string id { get; set; }
-        }
+
 
         // Check the user submitted answer
         [HttpPost]
-        public async Task<String> Check([Bind("id")] Answer answer)
+        public JsonResult Check([FromBody] Answer answer)
         {
 
             //Edit(Guid id, [Bind("Id,UId,Seed,SolvedBy,Dividend,Divisor,Quotient,Letters,Created,Solved")] Puzzle puzzle)
-            var puzzle = await _context.Puzzles
-                .FirstOrDefaultAsync(m => m.Id == Guid.Parse(answer.id));
+            //var puzzle = await _context.Puzzles
+            //    .FirstOrDefaultAsync(m => m.Id == id);
 
-            return JsonSerializer.Serialize(puzzle);
+            //return JsonSerializer.Serialize(puzzle);
+            return Json(answer.id);
 
         }
 
