@@ -43,7 +43,7 @@
 
 
     @* Main Col *@
-    <div class="col-lg-8">
+    <div class="col-lg-6 mb-5">
 
         @* --------------------- Quotient Row ------------------ *@
         <div class="row">
@@ -83,12 +83,12 @@
                     if (i == 0)
                     {
                         converted = ConvertToLetter(dividend.Substring(i, 1), letters);
-                        <div class="col text-center border-2 border-top border-start border-darkest">@converted</div>
+                        <div class="col text-center border-2 border-top border-start border-dark">@converted</div>
                     }
                     else
                     {
                         converted = ConvertToLetter(dividend.Substring(i, 1), letters);
-                        <div class="col text-center border-2 border-top border-darkest">@converted</div>
+                        <div class="col text-center border-2 border-top border-dark">@converted</div>
                     }
 
 
@@ -175,7 +175,7 @@
                             else if (j >= emptyColumns && j < emptyColumns + subtrahend.ToString().Length)
                             {
                                 converted = ConvertToLetter(subtrahend.ToString().Substring(k, 1), letters);
-                                <div class="col text-center border-2 border-bottom border-darkest">@converted</div>
+                                <div class="col text-center border-2 border-bottom border-dark">@converted</div>
                                 k++; // subtrahend position counter for substring
                             }
                             else
@@ -258,7 +258,7 @@
 
     @* Side Col *@
 
-    <div class="col-lg-4">
+    <div class="col-lg-6">
         <div class="row">
 
             @{
