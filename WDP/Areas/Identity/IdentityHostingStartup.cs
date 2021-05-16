@@ -1,10 +1,10 @@
-﻿using WDP.Areas.Identity.Data;
-using WDP.Data;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WDP.Areas.Identity.Data;
+using WDP.Data;
 
 [assembly: HostingStartup(typeof(WDP.Areas.Identity.IdentityHostingStartup))]
 namespace WDP.Areas.Identity
@@ -22,9 +22,11 @@ namespace WDP.Areas.Identity
                 services.AddIdentity<ApplicationUser, ApplicationRole>()
                     .AddRoles<ApplicationRole>() // ? 
                     .AddRoleManager<RoleManager<ApplicationRole>>() // ?
+
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddDefaultUI()
                     .AddDefaultTokenProviders();
+
                 services.AddAuthorization(options =>
                 {
 

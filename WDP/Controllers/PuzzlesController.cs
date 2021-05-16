@@ -1,15 +1,11 @@
-﻿using System;
+﻿using BL;
+using DAL;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using NLog;
-using BL;
-using DAL;
 
 namespace WDP.Controllers
 {
@@ -39,7 +35,7 @@ namespace WDP.Controllers
             bool check = true;
             Dictionary<string, int> answerKey = new();
 
-            if ( answer.one.Length==2 && answer.two.Length == 2 && answer.three.Length == 2 && answer.four.Length == 2 && answer.five.Length == 2 && answer.six.Length == 2 && answer.seven.Length == 2 && answer.eight.Length == 2 && answer.nine.Length == 2 && answer.ten.Length == 2)
+            if (answer.one.Length == 2 && answer.two.Length == 2 && answer.three.Length == 2 && answer.four.Length == 2 && answer.five.Length == 2 && answer.six.Length == 2 && answer.seven.Length == 2 && answer.eight.Length == 2 && answer.nine.Length == 2 && answer.ten.Length == 2)
             {
                 answerKey.Add(answer.one.Substring(0, 1), Int32.Parse(answer.one.Substring(1, 1)));
                 answerKey.Add(answer.two.Substring(0, 1), Int32.Parse(answer.two.Substring(1, 1)));
@@ -57,11 +53,11 @@ namespace WDP.Controllers
 
                 if (!string.IsNullOrEmpty(puzzle.Letters))
                 {
-                    for (int i=0; i< puzzle.Letters.Length; i++)
+                    for (int i = 0; i < puzzle.Letters.Length; i++)
                     {
 
                         //         
-                        if ( i !=  answerKey[puzzle.Letters.Substring(i, 1)]  )
+                        if (i != answerKey[puzzle.Letters.Substring(i, 1)])
                         {
                             check = false;
                         }
@@ -143,7 +139,7 @@ namespace WDP.Controllers
         }
 
         // GET: Puzzles/Create
-     
+
         public async Task<IActionResult> Create()
         {
             Random rand = new Random();
@@ -161,7 +157,7 @@ namespace WDP.Controllers
 
 
             aPuzzle.Created = DateTime.Now;
-            
+
             if (ModelState.IsValid)
             {
                 aPuzzle.Id = Guid.NewGuid();

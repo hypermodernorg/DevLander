@@ -1,10 +1,10 @@
-﻿using WDP.Areas.Identity.Data;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using WDP.Areas.Identity.Data;
 
 namespace WDP.Areas.Identity.Pages.Account
 {

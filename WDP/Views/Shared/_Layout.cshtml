@@ -14,9 +14,9 @@
 <body class="bg-white">
     <div class="container-fluid p-0">
         <div class="container-fluid bg-top">
-            <div class="container-xl">
-                <div class="row">
-                    <div class="col text-end text-white fs-6">
+            <div class="container-fluid ">
+                <div class="row ms-4 me-4">
+                    <div class="col text-end text-white fs-6 p-0 m-0">
                         Total Puzzles Solved: 1
                     </div>
                 </div>
@@ -25,8 +25,8 @@
 
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container-xl">
-                <a class="navbar-brand text-uppercase fw-bolder" href="#">Word Division Puzzles</a>
+            <div class="container-fluid m-4">
+                <a class="navbar-brand text-uppercase fw-bold" style="transform: scale(1, 4)" href="#">Word Division Puzzles</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -51,20 +51,14 @@
                 </div>
             </div>
         </nav>
-        @{ var homeClass = ""; } 
-        @if (ViewBag.IsHome == null) { homeClass = "bg-light p-4"; }
 
-            <main role="main" class="@homeClass">
-                @RenderBody()
-            </main>
-
-
-        <main role="main" class="">
+        <div class="container-fluid p-0">
 
 
             @RenderBody()
-        </main>
+        
 
+        </div>
     </div>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>

@@ -1,11 +1,12 @@
+using DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
-using DAL;
-using BL;
+using WDP.Areas.Identity.Data;
 
 namespace WDP
 {
@@ -21,6 +22,9 @@ namespace WDP
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+
+
             services.AddControllersWithViews();
             services.AddRazorPages()
                 .AddRazorRuntimeCompilation();
@@ -31,8 +35,9 @@ namespace WDP
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
+           
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -48,7 +53,9 @@ namespace WDP
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
+            MyIdentityDataInitializer.SeedData(userManager, roleManager);
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
@@ -60,6 +67,68 @@ namespace WDP
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+    }
+
+    public static class MyIdentityDataInitializer
+    {
+        public static void SeedData (UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        {
+            SeedRoles(roleManager);
+            SeedUsers(userManager);
+        }
+
+        public static void SeedUsers (UserManager<ApplicationUser> userManager)
+        {
+            if (userManager.FindByEmailAsync("lander083077@gmail.com").Result == null)
+            {
+                ApplicationUser user = new ApplicationUser();
+                user.UserName = "Admin";
+                user.Email = "lander083077@gmail.com";
+
+                IdentityResult result = userManager.CreateAsync(user, "Hypermodern1!h").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, "Administrator").Wait();
+                }
+            }
+
+        }
+
+        public static void SeedRoles (RoleManager<ApplicationRole> roleManager)
+        {
+            if (!roleManager.RoleExistsAsync("Administrator").Result)
+            {
+                ApplicationRole role = new ApplicationRole();
+                role.Name = "Administrator";
+                role.Description = "Perform all admin functions.";
+                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+            }
+
+            if (!roleManager.RoleExistsAsync("MemberPlus").Result)
+            {
+                ApplicationRole role = new ApplicationRole();
+                role.Name = "MemberPlus";
+                role.Description = "Paid Membership.";
+                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+            }
+
+            if (!roleManager.RoleExistsAsync("Member").Result)
+            {
+                ApplicationRole role = new ApplicationRole();
+                role.Name = "Member";
+                role.Description = "Basic Membership.";
+                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+            }
+
+            if (!roleManager.RoleExistsAsync("Guest").Result)
+            {
+                ApplicationRole role = new ApplicationRole();
+                role.Name = "Guest";
+                role.Description = "Guest User.";
+                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+            }
         }
     }
 }

@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
-using Microsoft.Extensions.Configuration;
+﻿using BL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using BL;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace DAL
 {

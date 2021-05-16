@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 
-public class ApplicationRole : IdentityRole<Guid>
+namespace WDP.Areas.Identity.Data
 {
-    public string Description { get; set; }
+
+    public class ApplicationRole : IdentityRole<Guid>
+    {
+        public string Description { get; set; }
+    }
 }

@@ -1,5 +1,4 @@
-﻿using WDP.Areas.Identity.Data;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -13,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using WDP.Areas.Identity.Data;
 
 namespace WDP.Areas.Identity.Pages.Account
 {
@@ -39,8 +39,8 @@ namespace WDP.Areas.Identity.Pages.Account
             {
                 _logger.LogInformation("There are no users. Initiate create first user.");
                 //var firstUser = new FirstUser(true);
-      
-           
+
+
             }
 
         }
@@ -79,9 +79,9 @@ namespace WDP.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-     
 
-  
+
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
