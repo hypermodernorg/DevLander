@@ -5,60 +5,78 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<div class="container-fluid">
+    <div class="row p-4">
+        <div class="col-lg-8">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
+            <h1>Index</h1>
 
-
-            <th>
-                @Html.DisplayNameFor(model => model.Divisor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quotient)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Letters)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Solved)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
+            <p>
+                <a asp-action="Create">Create New</a>
+            </p>
+            <table class="table">
+                <thead>
+                    <tr>
 
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Divisor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quotient)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Letters)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Solved)
-            </td>
-            <td>
-                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Divisor)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Quotient)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Letters)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Created)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Solved)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.SolvedBy == Guid.Empty)
+                        {
+                            <tr>
+
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Divisor)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Quotient)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Letters)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Created)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Solved)
+                                </td>
+                                <td>
+                                    @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
+
+                        }
+
+                    }
+                </tbody>
+            </table>
+
+
+        </div>
+        <div class="col-lg-4">
+
+        </div>
+    </div>
+</div>

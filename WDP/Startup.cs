@@ -49,6 +49,20 @@ namespace WDP
                 app.UseHsts();
             }
 
+            app.Use(async (context, next) =>
+            {
+                var url = context.Request.Path.Value;
+
+                // Rewrite to index
+                if (url == "" || url == "/")
+                {
+                        context.Request.Path = "/puzzles/landingpage/";
+                }
+                await next();
+            });
+
+
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
@@ -65,7 +79,7 @@ namespace WDP
                     pattern: "{area:exists}/{Controller=Default}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Puzzles}/{action=LandingPage}/{id?}");
             });
         }
     }

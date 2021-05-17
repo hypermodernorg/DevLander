@@ -33,306 +33,307 @@
 
 
 }
-
-<div class="row">
-    <div class="col text-center">
-        <h3 id="messageReturned"class="text-uppercase"></h3>
+<div class="container-fluid p-5">
+    <div class="row">
+        <div class="col text-center">
+            <h3 id="messageReturned" class="text-uppercase"></h3>
+        </div>
     </div>
-</div>
-<div class="row">
 
 
-    @* Main Col *@
-    <div class="col-lg-6 mb-5 p-3">
+    <div class="row">
+        @* Main Col *@
+        <div class="col-lg-6 mb-5 p-3">
 
-        @* --------------------- Quotient Row ------------------ *@
-        <div class="row">
-            @{
-                int quotientStart = (totalColumns - quotient.Length);
+            @* --------------------- Quotient Row ------------------ *@
+            <div class="row  gx-0">
+                @{
+                    int quotientStart = (totalColumns - quotient.Length);
 
 
-                for (int i = 0; i < totalColumns; i++)
-                {
-                    if (i < quotientStart)
+                    for (int i = 0; i < totalColumns; i++)
                     {
-                        <div class="col text-center"></div>
+                        if (i < quotientStart)
+                        {
+                            <div class="col text-center"></div>
+                        }
+                        else
+                        {
+                            converted = ConvertToLetter(quotient.Substring(i - quotientStart, 1), letters);
+                            <div class="col text-center">@converted</div>
+                            Console.WriteLine("Quotient Row:  " + @quotient.Substring(i - quotientStart, 1) + "  " + quotient);
+                        }
                     }
-                    else
+                }
+
+            </div>
+
+
+
+            @* --------------- Divisor & Dividend Row ----------------*@
+            <div class="row  gx-0">
+                @{
+                    for (int i = 0; i < divisor.Length; i++)
                     {
-                        converted = ConvertToLetter(quotient.Substring(i - quotientStart, 1), letters);
+                        converted = ConvertToLetter(divisor.Substring(i, 1), letters);
                         <div class="col text-center">@converted</div>
-                        Console.WriteLine("Quotient Row:  " + @quotient.Substring(i - quotientStart, 1) + "  " + quotient);
                     }
-                }
-            }
-
-        </div>
-
-
-
-        @* --------------- Divisor & Dividend Row ----------------*@
-        <div class="row">
-            @{
-                for (int i = 0; i < divisor.Length; i++)
-                {
-                    converted = ConvertToLetter(divisor.Substring(i, 1), letters);
-                    <div class="col text-center">@converted</div>
-                }
-                for (int i = 0; i < dividend.Length; i++)
-                {
-                    if (i == 0)
+                    for (int i = 0; i < dividend.Length; i++)
                     {
-                        converted = ConvertToLetter(dividend.Substring(i, 1), letters);
-                        <div class="col text-center border-2 border-top border-start border-dark">@converted</div>
-                    }
-                    else
-                    {
-                        converted = ConvertToLetter(dividend.Substring(i, 1), letters);
-                        <div class="col text-center border-2 border-top border-dark">@converted</div>
-                    }
-
-
-
-                }
-
-            }
-
-        </div>
-
-
-
-        @* --------------------- The rest ------------------------*@
-
-        @{
-            // This is the hard part as we are attempting to print the rest of the long division problem recursively
-            // 1. The first number of columns equal to the length of the divisor will almost always be empty columns
-            //      The exception to the above is the first row which needs a subtraction sign.
-            // 2. Need a while loop that exits when the difference is zero or a arbitrary number to prevent infinit loop.
-            //      The difference being zero much be qualified as having no available dividend pulldowns.
-
-            // Instead of a while loop, lets explore a for loop driven by quotient length
-
-            int multiplier = 0;
-            int product = 0;
-            int subtrahend = 0;
-            string minuend = "";
-            string difference = "";
-            int emptyColumns = divisor.Length;
-            int dividendPosition = 0;
-
-
-
-
-            // for the number of the quotient length
-            for (int i = 0; i < quotient.Length; i++)
-            {
-                <div class="row">
-                    @{ // print the subtrahend
-                        multiplier = Int32.Parse(quotient.Substring(i, 1)); // This is one of the numbers in the quotient (the top most long division number)
-                        product = multiplier * Int32.Parse(divisor); // The product of the multiplier and the divisor.
-                        subtrahend = product; // minuend - subtrahend = difference
-
-                        // lets figure out the minuend
-                        // As long as the divisor is less than the minuend, continue pulling down from the dividend.
-                        // Also keep track of the dividend position for later.
                         if (i == 0)
                         {
-                            minuend = minuend + dividend.ToString().Substring(0, 1);
-                            dividendPosition++;
+                            converted = ConvertToLetter(dividend.Substring(i, 1), letters);
+                            <div class="col text-center border-2 border-top border-start border-dark">@converted</div>
                         }
-
-                        while (Int32.Parse(divisor) > Int32.Parse(minuend))
+                        else
                         {
-
-                            minuend = minuend + dividend.ToString().Substring(dividendPosition, 1);
-                            dividendPosition++;
-                            Console.WriteLine("runaway? a");
-
-                        }
-
-                        for (int m = 0; m < minuend.Length - subtrahend.ToString().Length; m++)
-                        {
-                            emptyColumns++;
+                            converted = ConvertToLetter(dividend.Substring(i, 1), letters);
+                            <div class="col text-center border-2 border-top border-dark">@converted</div>
                         }
 
 
-
-
-
-                        int k = 0; // subtrahend position counter for substring
-                        for (int j = 0; j < totalColumns; j++)
-                        {
-                            // subtrahend   ie product   here
-
-                            if (j < emptyColumns - 1)
-                            {
-                                <div class="col text-center"></div>
-                            }
-                            else if (j == emptyColumns - 1)
-                            {
-                                <div class="col text-center">-</div>
-                            }
-                            else if (j >= emptyColumns && j < emptyColumns + subtrahend.ToString().Length)
-                            {
-                                converted = ConvertToLetter(subtrahend.ToString().Substring(k, 1), letters);
-                                <div class="col text-center border-2 border-bottom border-dark">@converted</div>
-                                k++; // subtrahend position counter for substring
-                            }
-                            else
-                            {
-                                <div class="col text-center"></div>
-                            }
-                        }
 
                     }
-                </div>
+
+                }
+
+            </div>
 
 
-                <div class="row">
-                    @{
+
+            @* --------------------- The rest ------------------------*@
+
+            @{
+                // This is the hard part as we are attempting to print the rest of the long division problem recursively
+                // 1. The first number of columns equal to the length of the divisor will almost always be empty columns
+                //      The exception to the above is the first row which needs a subtraction sign.
+                // 2. Need a while loop that exits when the difference is zero or a arbitrary number to prevent infinit loop.
+                //      The difference being zero much be qualified as having no available dividend pulldowns.
+
+                // Instead of a while loop, lets explore a for loop driven by quotient length
+
+                int multiplier = 0;
+                int product = 0;
+                int subtrahend = 0;
+                string minuend = "";
+                string difference = "";
+                int emptyColumns = divisor.Length;
+                int dividendPosition = 0;
 
 
 
-                        difference = (Int32.Parse(minuend) - subtrahend).ToString();
-                        minuend = difference;
 
-                        for (int m = 0; m < subtrahend.ToString().Length - difference.ToString().Length; m++)
-                        {
-                            emptyColumns++;
-                        }
+                // for the number of the quotient length
+                for (int i = 0; i < quotient.Length; i++)
+                {
+                    <div class="row  gx-0">
+                        @{ // print the subtrahend
+                            multiplier = Int32.Parse(quotient.Substring(i, 1)); // This is one of the numbers in the quotient (the top most long division number)
+                            product = multiplier * Int32.Parse(divisor); // The product of the multiplier and the divisor.
+                            subtrahend = product; // minuend - subtrahend = difference
 
-                        Console.WriteLine("Difference:  " + difference);
-                        Console.WriteLine("Quotient Length:  " + i);
-
-                        if (i != quotient.Length - 1)
-                        {
+                            // lets figure out the minuend
+                            // As long as the divisor is less than the minuend, continue pulling down from the dividend.
+                            // Also keep track of the dividend position for later.
+                            if (i == 0)
+                            {
+                                minuend = minuend + dividend.ToString().Substring(0, 1);
+                                dividendPosition++;
+                            }
 
                             while (Int32.Parse(divisor) > Int32.Parse(minuend))
                             {
-                                Console.WriteLine("Minuend:  " + minuend);
-                                Console.WriteLine("Dividend Position::  " + dividendPosition);
+
                                 minuend = minuend + dividend.ToString().Substring(dividendPosition, 1);
                                 dividendPosition++;
+                                Console.WriteLine("runaway? a");
 
+                            }
+
+                            for (int m = 0; m < minuend.Length - subtrahend.ToString().Length; m++)
+                            {
+                                emptyColumns++;
+                            }
+
+
+
+
+
+                            int k = 0; // subtrahend position counter for substring
+                            for (int j = 0; j < totalColumns; j++)
+                            {
+                                // subtrahend   ie product   here
+
+                                if (j < emptyColumns - 1)
+                                {
+                                    <div class="col text-center"></div>
+                                }
+                                else if (j == emptyColumns - 1)
+                                {
+                                    <div class="col text-center">-</div>
+                                }
+                                else if (j >= emptyColumns && j < emptyColumns + subtrahend.ToString().Length)
+                                {
+                                    converted = ConvertToLetter(subtrahend.ToString().Substring(k, 1), letters);
+                                    <div class="col text-center border-2 border-bottom border-dark">@converted</div>
+                                    k++; // subtrahend position counter for substring
+                                }
+                                else
+                                {
+                                    <div class="col text-center"></div>
+                                }
                             }
 
                         }
-
-
-
-
-                        k = 0;
-                        for (int j = 0; j < totalColumns; j++)
-                        {
-                            // minuend ie  difference + dividend substrings here
-                            if (j < emptyColumns)
-                            {
-                                <div class="col text-center"></div>
-                            }
-                            else if (j >= emptyColumns && j < emptyColumns + minuend.Length)
-                            {
-                                converted = ConvertToLetter(minuend.Substring(k, 1), letters);
-
-                                <div class="col text-center">@converted</div>
-                                k++;
-                            }
-                            else
-                            {
-                                <div class="col text-center"></div>
-                            }
-
-
-
-                        }
-                    }
-
-
-                </div>
-
-                        }
-
-
-        }
-
-    </div>
-
-    @* Side Col *@
-
-    <div class="col-lg-6 p-3">
-        <div class="row">
-
-            @{
-                        // User input: First lets shuffle the letters
-                        var shuffleLetters = "";
-                        {
-                            Random rand = new Random();
-                            var alphebet = letters.ToCharArray().ToList();
-
-                            for (int i = 0; i < 10; i++) // Get 9 letters
-                            {
-                                var n = rand.Next(0, 10 - i); // Get a random letter, decreasing number of available letters each time by 1.
-                                shuffleLetters += alphebet[n]; // Add the letter to the string of letters
-                                alphebet.Remove(alphebet[n]); //Remove letter so it cannot be selected again.
-                            }
-                        }
-
-                        for (int i = 0; i < shuffleLetters.Length; i++)
-                        {
-                            if (i < 5)
-                            {
-                                <div class="col-6">
-                                    <div class="input-group mb-3">
-                                        <label class="input-group-text" for="inputGroupSelect-@shuffleLetters.Substring(i, 1)">@shuffleLetters.Substring(i, 1)</label>
-                                        <select class="form-select letters" id="inputGroupSelect-@shuffleLetters.Substring(i, 1)">
-                                            <option selected></option>
-                                            <option value="0">0</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            }
-                            if (i >= 5)
-                            {
-                                <div class="col-6">
-                                    <div class="input-group mb-3">
-                                        <label class="input-group-text" for="inputGroupSelect-@shuffleLetters.Substring(i, 1)">@shuffleLetters.Substring(i, 1)</label>
-                                        <select class="form-select letters" id="inputGroupSelect-@shuffleLetters.Substring(i, 1)">
-                                            <option selected></option>
-                                            <option value="0">0</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                            }
-
-                        }
-                    }
-                    <div class="row">
-
-                        <div class="col text-center">
-                            <button type="button" class="btn btn-primary btn-sm mb-3" onclick="CheckAnswer('@Model.Id')">Check Answers</button>
-                        </div>
                     </div>
 
+
+                    <div class="row  gx-0">
+                        @{
+
+
+
+                            difference = (Int32.Parse(minuend) - subtrahend).ToString();
+                            minuend = difference;
+
+                            for (int m = 0; m < subtrahend.ToString().Length - difference.ToString().Length; m++)
+                            {
+                                emptyColumns++;
+                            }
+
+                            Console.WriteLine("Difference:  " + difference);
+                            Console.WriteLine("Quotient Length:  " + i);
+
+                            if (i != quotient.Length - 1)
+                            {
+
+                                while (Int32.Parse(divisor) > Int32.Parse(minuend))
+                                {
+                                    Console.WriteLine("Minuend:  " + minuend);
+                                    Console.WriteLine("Dividend Position::  " + dividendPosition);
+                                    minuend = minuend + dividend.ToString().Substring(dividendPosition, 1);
+                                    dividendPosition++;
+
+                                }
+
+                            }
+
+
+
+
+                            k = 0;
+                            for (int j = 0; j < totalColumns; j++)
+                            {
+                                // minuend ie  difference + dividend substrings here
+                                if (j < emptyColumns)
+                                {
+                                    <div class="col text-center"></div>
+                                }
+                                else if (j >= emptyColumns && j < emptyColumns + minuend.Length)
+                                {
+                                    converted = ConvertToLetter(minuend.Substring(k, 1), letters);
+
+                                    <div class="col text-center">@converted</div>
+                                    k++;
+                                }
+                                else
+                                {
+                                    <div class="col text-center"></div>
+                                }
+
+
+
+                            }
+                        }
+
+
+                    </div>
+
+                }
+
+
+            }
+
+        </div>
+
+        @* Side Col *@
+
+        <div class="col-lg-6 p-3">
+            <div class="row">
+
+                @{
+                    // User input: First lets shuffle the letters
+                    var shuffleLetters = "";
+                    {
+                        Random rand = new Random();
+                        var alphebet = letters.ToCharArray().ToList();
+
+                        for (int i = 0; i < 10; i++) // Get 9 letters
+                        {
+                            var n = rand.Next(0, 10 - i); // Get a random letter, decreasing number of available letters each time by 1.
+                            shuffleLetters += alphebet[n]; // Add the letter to the string of letters
+                            alphebet.Remove(alphebet[n]); //Remove letter so it cannot be selected again.
+                        }
+                    }
+
+                    for (int i = 0; i < shuffleLetters.Length; i++)
+                    {
+                        if (i < 5)
+                        {
+                            <div class="col-6">
+                                <div class="input-group mb-3">
+                                    <label class="input-group-text" for="inputGroupSelect-@shuffleLetters.Substring(i, 1)">@shuffleLetters.Substring(i, 1)</label>
+                                    <select class="form-select letters" id="inputGroupSelect-@shuffleLetters.Substring(i, 1)">
+                                        <option selected></option>
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                    </select>
+                                </div>
+                            </div>
+                        }
+                        if (i >= 5)
+                        {
+                            <div class="col-6">
+                                <div class="input-group mb-3">
+                                    <label class="input-group-text" for="inputGroupSelect-@shuffleLetters.Substring(i, 1)">@shuffleLetters.Substring(i, 1)</label>
+                                    <select class="form-select letters" id="inputGroupSelect-@shuffleLetters.Substring(i, 1)">
+                                        <option selected></option>
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        }
+
+                    }
+                }
+                <div class="row">
+
+                    <div class="col text-center">
+                        <button type="button" class="btn btn-primary btn-sm mb-3" onclick="CheckAnswer('@Model.Id')">Check Answers</button>
+                    </div>
                 </div>
+
+            </div>
         </div>
     </div>
+</div>
 
 

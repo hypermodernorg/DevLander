@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BL
 {
@@ -29,6 +30,8 @@ namespace BL
         public Guid Id { get; set; } // Puzzle Id
         public Puzzle Puzzle { get; set; }
     }
+
+    [NotMapped]
     public class Answer
     {
         public Guid id { get; set; }

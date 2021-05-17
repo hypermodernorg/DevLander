@@ -62,10 +62,16 @@ $dark: #090809 !default;
 
 
 $tealc: #98D2EB !default;
-$tealcMedium: #F87060 !default;
+$tealcMedium: darken($tealc, 10%);
 $top: $gray-700 !default;
 $lavender: #B2B1CF !default;
-$lavenderMedium: #9068BE  !default;
+$lavenderMedium: darken($lavender, 10%);
+
+.grad {
+    background-image: linear-gradient($tealcMedium, black);
+}
+
+$test: lighten($tealc, 50);
 
 
 $theme-colors: ( "tealc": $tealc, "tealcMedium": $tealcMedium, "top": $top, "lavender": $lavender , "lavenderMedium": $lavenderMedium, "primary": $primary, "secondary": $secondary, "success": $success, "info": $info, "warning": $warning, "danger": $danger, "light": $light, "dark": $dark ) !default;

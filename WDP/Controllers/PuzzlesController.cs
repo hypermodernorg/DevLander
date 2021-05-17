@@ -6,16 +6,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WDP.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace WDP.Controllers
 {
     public class PuzzlesController : Controller
     {
         private readonly PuzzleContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public PuzzlesController(PuzzleContext context)
+
+        public PuzzlesController(PuzzleContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Puzzles
@@ -63,7 +68,27 @@ namespace WDP.Controllers
                         }
                     }
 
-                    if (check) { message = "Congratulations!! You Solved the Puzzle!!"; }
+                    if (check)
+                    {
+                        ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
+                        
+
+                        if(applicationUser != null)
+                        {
+                            puzzle.Solved = DateTime.Now;
+                            puzzle.SolvedBy = applicationUser.Id;
+
+                            _context.Update(puzzle);
+                            await _context.SaveChangesAsync();
+                            message = "Congratulations!! You Solved the Puzzle!!";
+                        }
+                        else
+                        {
+                            message = "Congratulations!! You Solved the Puzzle!! Unfortunately you are not logged-in. To get credit for solving puzzles in the future, please log in or create an account.";
+                        }
+
+                    }
+
                     else { message = "Sorry, Incorrect. Please try again."; }
                 }
                 else
@@ -76,12 +101,27 @@ namespace WDP.Controllers
             {
                 message = "Make sure you have filled in answers for each letter.";
             }
-
+          
             return Json(message);
         }
 
 
 
+        // GET: Puzzles/LandingPage
+        public async Task<IActionResult> LandingPage()
+        {
+            var puzzles = await _context.Puzzles.ToListAsync();
+
+            Random rand = new();
+
+            ;
+
+            //var puzzle = await _context.Puzzles
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+
+
+            return View(puzzles[rand.Next(puzzles.Count)]);
+        }
 
 
 
@@ -99,27 +139,9 @@ namespace WDP.Controllers
             {
                 return NotFound();
             }
-
             return View(puzzle);
         }
 
-        // GET: Puzzles/Details/5
-        public async Task<IActionResult> Details2(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var puzzle = await _context.Puzzles
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (puzzle == null)
-            {
-                return NotFound();
-            }
-
-            return View(puzzle);
-        }
 
         public string MakeLetters()
         {
@@ -142,6 +164,7 @@ namespace WDP.Controllers
 
         public async Task<IActionResult> Create()
         {
+            ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
             Random rand = new Random();
             Puzzle aPuzzle = new();
             aPuzzle.Letters = MakeLetters(); // Get the string of letters.
@@ -157,6 +180,8 @@ namespace WDP.Controllers
 
 
             aPuzzle.Created = DateTime.Now;
+            aPuzzle.UId = applicationUser.Id;
+            aPuzzle.Seed = Guid.NewGuid();
 
             if (ModelState.IsValid)
             {
