@@ -15,7 +15,7 @@ namespace BL
         public string Quotient { get; set; } // Top part.
         public string Letters { get; set; } // Letters in order of 0-9
         public DateTime Created { get; set; } // When it was created.
-        public DateTime Solved { get; set; } // When it was solved.
+        public DateTime? Solved { get; set; } // When it was solved.
 
         public List<Comment> Comments { get; set; }
     }
@@ -45,5 +45,16 @@ namespace BL
         public string eight { get; set; }
         public string nine { get; set; }
         public string ten { get; set; }
+    }
+
+    [NotMapped]
+    public class SolvedAnswer
+    {
+        public Guid id { get; set; }
+        public Guid Uid { get; set; }
+        public string UserName { get; set; }
+        public string Divisor { get; set; }
+        public string Quotient { get; set; }
+        
     }
 }

@@ -13,6 +13,7 @@ namespace DAL
         public virtual DbSet<Puzzle> Puzzles { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Answer> Answers { get; set; }
+        public virtual DbSet<SolvedAnswer> SolvedAnswers { get; set; }
     }
 
     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<PuzzleContext>

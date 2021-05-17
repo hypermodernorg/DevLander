@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WDP.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WDP.Controllers
 {
@@ -23,7 +24,7 @@ namespace WDP.Controllers
             _userManager = userManager;
         }
 
-        // GET: Puzzles
+        [Authorize(Roles = "Administrator, MemberPlus, Member")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Puzzles.ToListAsync());
@@ -105,27 +106,67 @@ namespace WDP.Controllers
             return Json(message);
         }
 
-
+        public string ConvertToLetters(string letters, string number)
+        {
+            string converted = "";
+            for (int i = 0; i<number.Length; i++)
+            {
+                var x =   letters.Substring(int.Parse(number.Substring(i, 1)),1 ) ;
+                converted += x;
+            }
+            return converted;
+        }
 
         // GET: Puzzles/LandingPage
         public async Task<IActionResult> LandingPage()
         {
             var puzzles = await _context.Puzzles.ToListAsync();
+       
+            List<SolvedAnswer> solvedAnswers = new();
+            
 
             Random rand = new();
 
-            ;
+            var solved = puzzles.Where(s => s.Solved != null)
+                .OrderBy(t => t.Solved)
+                .Take(4)
+                .ToList();
 
-            //var puzzle = await _context.Puzzles
-            //    .FirstOrDefaultAsync(m => m.Id == id);
+            foreach (var solv in solved)
+            {
+                SolvedAnswer solvedAnswer = new();
+                var user = await _userManager.FindByIdAsync(solv.SolvedBy.ToString());
+                solvedAnswer.id = solv.Id;
+                solvedAnswer.Uid = user.Id;
+                solvedAnswer.UserName = user.UserName;
+                solvedAnswer.Divisor = ConvertToLetters(solv.Letters, solv.Divisor);
+                solvedAnswer.Quotient = ConvertToLetters(solv.Letters, solv.Quotient);
+                solvedAnswers.Add(solvedAnswer);
+            }
 
 
-            return View(puzzles[rand.Next(puzzles.Count)]);
+
+            ViewData["solved"] = solvedAnswers;
+            ViewData["unsolved"] = puzzles.Where(s => s.Solved == null)
+                .OrderBy(t => t.Created)
+                .Take(5)
+                .ToList();
+
+
+            if (puzzles.Count != 0)
+            {
+                return View(puzzles[rand.Next(puzzles.Count)]);
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            
         }
 
 
 
-        // GET: Puzzles/Details/5
+        [Authorize(Roles = "Administrator, MemberPlus, Member")]
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -160,8 +201,8 @@ namespace WDP.Controllers
             return letters;
         }
 
-        // GET: Puzzles/Create
 
+        [Authorize(Roles = "Administrator, MemberPlus, Member")]
         public async Task<IActionResult> Create()
         {
             ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
@@ -246,7 +287,7 @@ namespace WDP.Controllers
         //    return View(puzzle);
         //}
 
-        // GET: Puzzles/Delete/5
+        [Authorize(Roles = "Administrator, MemberPlus, Member")]
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -264,7 +305,7 @@ namespace WDP.Controllers
             return View(puzzle);
         }
 
-        // POST: Puzzles/Delete/5
+        [Authorize(Roles = "Administrator, MemberPlus, Member")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

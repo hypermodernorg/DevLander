@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+   
 
     string quotient = Model.Quotient;
     string divisor = Model.Divisor;
@@ -282,19 +283,49 @@
 
             </div>
 
-            <div class="col-lg-4 p-4 bg-tealc">
-                <!--<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
-                <!-- wdp -->
-                <!--<ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-9459743466917548"
-                     data-adtest="on"
-                     data-ad-slot="9206039395"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>-->
+            <div class="col-lg-4 ps-4 pe-4 bg-tealc">
+
+                <div class="row mb-2 p-2 bg-tealcMedium">
+                    <div class="col text-center">
+                        <strong>Recently Solved</strong>
+                    </div>
+                </div>
+
+
+                @{
+                    foreach (var solve in ViewData["solved"] as List<BL.SolvedAnswer>)
+                    {
+                        <div class="row mb-2 p-2 bg-tealcMedium">
+                            <div class="col">
+                                <span>Congratulations @solve.UserName !! <a class="" asp-controller="Puzzles" asp-action="Details" asp-route-id="@solve.id">@solve.Divisor * @solve.Quotient</a></span>
+                                
+                            </div>
+                        </div>
+                    }
+                }
+
+                <div class="row mb-2 p-2 bg-lavenderMedium">
+                    <div class="col text-center">
+                        <strong>Unsolved</strong>
+                    </div>
+                </div>
+
+
+                @{
+                    foreach (var unsolve in ViewData["unsolved"] as List<BL.Puzzle>)
+                    {
+                        <div class="row mb-2 p-2 bg-lavenderMedium">
+                            <div class="col">
+                                @unsolve.Id
+                            </div>
+                        </div>
+                    }
+                }
+
+
+
+
+
             </div>
         </div>
     </div>
