@@ -1,0 +1,352 @@
+﻿@model BL.Puzzle
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+   
+
+    string quotient = Model.Quotient;
+    string divisor = Model.Divisor;
+    string dividend = (Int32.Parse(quotient) * Int32.Parse(divisor)).ToString();
+    string letters = Model.Letters; // The letters to replace the numbers in order of 0-9
+    int totalColumns = divisor.Length + dividend.Length; // the total number of columns
+    string converted = "";
+
+}
+
+@functions {
+
+    // function to convert letters to numbers
+    // change bool to false to prevent conversion for testing purposes.
+    // May later convert this to an admin uer option.
+    public string ConvertToLetter(string aNumber, string letters)
+    {
+        bool change = true;
+        string changed = aNumber;
+
+        if (change == true)
+        {
+            changed = letters[Int32.Parse(aNumber)].ToString();
+        }
+
+        return changed;
+    }
+
+
+}
+
+<div class="container-fluid bg-tealc">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col p-4">
+                <h1>Welcome to Word Division Puzzles</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container-fluid p-0">
+    <div class="container-fluid p-0 bg-tealc">
+        <div class="row gx-0">
+            <div class="col-lg-8 p-4 bg-lavender">
+
+                <div class="row">
+                    <div class="col-lg-6 fs-4 p-4">
+                        <p>Word division puzzles are a type of logic problems that first converts a long division problem's numbers into letters. One then solves the letters for their respective numbers using algebra, logic, elimination, and etc.</p>
+                        <p>To the side (or above if viewing on a smaller screen), is an example of a word division problem. Using logic, we can deduce that the bottom most number must be zero since it is the difference of the minuend and subtrahend above it, and because the minuend and subtrahend are both the same.</p>
+                        <p>Using similar logic, we can deduce the values of the other letters.</p>
+
+                    </div>
+
+
+
+                    @* Begin Word Division Problem *@
+                    <div class="col-lg-6 mb-5 p-3 fs-4 fw-bold">
+
+                        @* --------------------- Quotient Row ------------------ *@
+                        <div class="row gx-0  ">
+                            @{
+                                int quotientStart = (totalColumns - quotient.Length);
+
+
+                                for (int i = 0; i < totalColumns; i++)
+                                {
+                                    if (i < quotientStart)
+                                    {
+                                        <div class="col text-center"></div>
+                                    }
+                                    else
+                                    {
+                                        converted = ConvertToLetter(quotient.Substring(i - quotientStart, 1), letters);
+                                        <div class="col text-center">@converted</div>
+                                        Console.WriteLine("Quotient Row:  " + @quotient.Substring(i - quotientStart, 1) + "  " + quotient);
+                                    }
+                                }
+                            }
+
+                        </div>
+
+
+
+                        @* --------------- Divisor & Dividend Row ----------------*@
+                        <div class="row gx-0">
+                            @{
+                                for (int i = 0; i < divisor.Length; i++)
+                                {
+                                    converted = ConvertToLetter(divisor.Substring(i, 1), letters);
+                                    <div class="col text-center">@converted</div>
+                                }
+                                for (int i = 0; i < dividend.Length; i++)
+                                {
+                                    if (i == 0)
+                                    {
+                                        converted = ConvertToLetter(dividend.Substring(i, 1), letters);
+                                        <div class="col text-center border-2 border-top border-start border-dark">@converted</div>
+                                    }
+                                    else
+                                    {
+                                        converted = ConvertToLetter(dividend.Substring(i, 1), letters);
+                                        <div class="col text-center border-2 border-top border-dark">@converted</div>
+                                    }
+
+
+
+                                }
+
+                            }
+
+                        </div>
+
+
+
+                        @* --------------------- The rest ------------------------*@
+
+                        @{
+                            // This is the hard part as we are attempting to print the rest of the long division problem recursively
+                            // 1. The first number of columns equal to the length of the divisor will almost always be empty columns
+                            //      The exception to the above is the first row which needs a subtraction sign.
+                            // 2. Need a while loop that exits when the difference is zero or a arbitrary number to prevent infinit loop.
+                            //      The difference being zero much be qualified as having no available dividend pulldowns.
+
+                            // Instead of a while loop, lets explore a for loop driven by quotient length
+
+                            int multiplier = 0;
+                            int product = 0;
+                            int subtrahend = 0;
+                            string minuend = "";
+                            string difference = "";
+                            int emptyColumns = divisor.Length;
+                            int dividendPosition = 0;
+
+
+
+
+                            // for the number of the quotient length
+                            for (int i = 0; i < quotient.Length; i++)
+                            {
+                                <div class="row gx-0">
+                                    @{ // print the subtrahend
+                                        multiplier = Int32.Parse(quotient.Substring(i, 1)); // This is one of the numbers in the quotient (the top most long division number)
+                                        product = multiplier * Int32.Parse(divisor); // The product of the multiplier and the divisor.
+                                        subtrahend = product; // minuend - subtrahend = difference
+
+                                        // lets figure out the minuend
+                                        // As long as the divisor is less than the minuend, continue pulling down from the dividend.
+                                        // Also keep track of the dividend position for later.
+                                        if (i == 0)
+                                        {
+                                            minuend = minuend + dividend.ToString().Substring(0, 1);
+                                            dividendPosition++;
+                                        }
+
+                                        while (Int32.Parse(divisor) > Int32.Parse(minuend))
+                                        {
+
+                                            minuend = minuend + dividend.ToString().Substring(dividendPosition, 1);
+                                            dividendPosition++;
+                                            Console.WriteLine("runaway? a");
+
+                                        }
+
+                                        for (int m = 0; m < minuend.Length - subtrahend.ToString().Length; m++)
+                                        {
+                                            emptyColumns++;
+                                        }
+
+
+
+
+
+                                        int k = 0; // subtrahend position counter for substring
+                                        for (int j = 0; j < totalColumns; j++)
+                                        {
+                                            // subtrahend   ie product   here
+
+                                            if (j < emptyColumns - 1)
+                                            {
+                                                <div class="col text-center"></div>
+                                            }
+                                            else if (j == emptyColumns - 1)
+                                            {
+                                                <div class="col text-center">-</div>
+                                            }
+                                            else if (j >= emptyColumns && j < emptyColumns + subtrahend.ToString().Length)
+                                            {
+                                                converted = ConvertToLetter(subtrahend.ToString().Substring(k, 1), letters);
+                                                <div class="col text-center border-2 border-bottom border-dark">@converted</div>
+                                                k++; // subtrahend position counter for substring
+                                            }
+                                            else
+                                            {
+                                                <div class="col text-center"></div>
+                                            }
+                                        }
+
+                                    }
+                                </div>
+
+
+                                <div class="row gx-0">
+                                    @{
+
+
+
+                                        difference = (Int32.Parse(minuend) - subtrahend).ToString();
+                                        minuend = difference;
+
+                                        for (int m = 0; m < subtrahend.ToString().Length - difference.ToString().Length; m++)
+                                        {
+                                            emptyColumns++;
+                                        }
+
+                                        Console.WriteLine("Difference:  " + difference);
+                                        Console.WriteLine("Quotient Length:  " + i);
+
+                                        if (i != quotient.Length - 1)
+                                        {
+
+                                            while (Int32.Parse(divisor) > Int32.Parse(minuend))
+                                            {
+                                                Console.WriteLine("Minuend:  " + minuend);
+                                                Console.WriteLine("Dividend Position::  " + dividendPosition);
+                                                minuend = minuend + dividend.ToString().Substring(dividendPosition, 1);
+                                                dividendPosition++;
+
+                                            }
+
+                                        }
+
+
+
+
+                                        k = 0;
+                                        for (int j = 0; j < totalColumns; j++)
+                                        {
+                                            // minuend ie  difference + dividend substrings here
+                                            if (j < emptyColumns)
+                                            {
+                                                <div class="col text-center"></div>
+                                            }
+                                            else if (j >= emptyColumns && j < emptyColumns + minuend.Length)
+                                            {
+                                                converted = ConvertToLetter(minuend.Substring(k, 1), letters);
+
+                                                <div class="col text-center">@converted</div>
+                                                k++;
+                                            }
+                                            else
+                                            {
+                                                <div class="col text-center"></div>
+                                            }
+
+
+
+                                        }
+                                    }
+
+
+                                </div>
+
+                            }
+
+
+                        }
+
+                    </div>
+                    @* END Word Division Problem *@
+
+
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4 ps-4 pe-4 bg-tealc">
+
+                <div class="row mb-2 p-2 bg-tealcMedium">
+                    <div class="col text-center">
+                        <strong>Recently Solved</strong>
+                    </div>
+                </div>
+
+
+                @{
+                    foreach (var solve in ViewData["solved"] as List<BL.SolvedAnswer>)
+                    {
+                        <div class="row mb-2 p-2 bg-tealcMedium">
+                            <div class="col">
+                                <span>Congratulations @solve.UserName !! <a class="" asp-controller="Puzzles" asp-action="Details" asp-route-id="@solve.id">@solve.Divisor * @solve.Quotient</a></span>
+                                
+                            </div>
+                        </div>
+                    }
+                }
+
+                <div class="row mb-2 p-2 bg-lavenderMedium">
+                    <div class="col text-center">
+                        <strong>Unsolved</strong>
+                    </div>
+                </div>
+
+
+                @{
+                    foreach (var unsolve in ViewData["unsolved"] as List<BL.Puzzle>)
+                    {
+                        <div class="row mb-2 p-2 bg-lavenderMedium">
+                            <div class="col">
+                                @unsolve.Id
+                            </div>
+                        </div>
+                    }
+                }
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row bg-tealcMedium">
+        <div class="col-lg-8 bg-lavenderMedium pt-5 pb-5 mb-4"></div>
+        <div class="col-lg-4 "></div>
+
+
+    </div>
+
+</div>
+
+<div class="container-fluid">
+    <div class="row bg-dark">
+        <div class="col-lg-8 pt-5 pb-5 mb-4"></div>
+        <div class="col-lg-4 "></div>
+
+
+    </div>
+
+</div>

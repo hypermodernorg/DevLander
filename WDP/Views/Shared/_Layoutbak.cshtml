@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WDP</title>
+    <meta name="keywords" content="@ViewBag.Keywords" />
+    <meta name="Description" content="@ViewBag.Description" />
+    <link rel="stylesheet" href="~/css/custom.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+<body class="bg-white">
+    <div class="container-fluid p-0">
+        <div class="container-fluid bg-top">
+            <div class="container-fluid ">
+                <div class="row ms-4 me-4">
+                    <div class="col text-end text-white fs-6 p-0 m-0">
+                        Total Puzzles Solved: 1
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid m-4">
+                <a class="navbar-brand text-uppercase fw-bold" style="transform: scale(1, 4)" href="#">Word Division Puzzles</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Puzzles" asp-action="LandingPage">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Puzzles" asp-action="Index">Puzzles</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                        </li>
+                    </ul>
+                    @*<form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>*@
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid p-0">
+
+
+            @RenderBody()
+        
+
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
