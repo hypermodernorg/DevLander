@@ -29,6 +29,7 @@
   --bs-color1: #E6FCF4;
   --bs-color2: #D6F7EE;
   --bs-color3: #2ECDA5;
+  --bs-color4: #7A7978;
   --bs-primary: #0d6efd;
   --bs-secondary: #6c757d;
   --bs-success: #198754;
@@ -2197,6 +2198,34 @@ textarea.form-control-lg {
     background-color: #2ECDA5;
     border-color: #2ECDA5; }
 
+.btn-color4 {
+  color: #000;
+  background-color: #7A7978;
+  border-color: #7A7978; }
+  .btn-color4:hover {
+    color: #000;
+    background-color: #8e8d8c;
+    border-color: #878686; }
+  .btn-check:focus + .btn-color4, .btn-color4:focus {
+    color: #000;
+    background-color: #8e8d8c;
+    border-color: #878686;
+    box-shadow: 0 0 0 0.25rem rgba(104, 103, 102, 0.5); }
+  .btn-check:checked + .btn-color4,
+  .btn-check:active + .btn-color4, .btn-color4:active, .btn-color4.active,
+  .show > .btn-color4.dropdown-toggle {
+    color: #000;
+    background-color: #959493;
+    border-color: #878686; }
+    .btn-check:checked + .btn-color4:focus,
+    .btn-check:active + .btn-color4:focus, .btn-color4:active:focus, .btn-color4.active:focus,
+    .show > .btn-color4.dropdown-toggle:focus {
+      box-shadow: 0 0 0 0.25rem rgba(104, 103, 102, 0.5); }
+  .btn-color4:disabled, .btn-color4.disabled {
+    color: #000;
+    background-color: #7A7978;
+    border-color: #7A7978; }
+
 .btn-primary {
   color: #fff;
   background-color: #0d6efd;
@@ -2482,6 +2511,27 @@ textarea.form-control-lg {
       box-shadow: 0 0 0 0.25rem rgba(46, 205, 165, 0.5); }
   .btn-outline-color3:disabled, .btn-outline-color3.disabled {
     color: #2ECDA5;
+    background-color: transparent; }
+
+.btn-outline-color4 {
+  color: #7A7978;
+  border-color: #7A7978; }
+  .btn-outline-color4:hover {
+    color: #000;
+    background-color: #7A7978;
+    border-color: #7A7978; }
+  .btn-check:focus + .btn-outline-color4, .btn-outline-color4:focus {
+    box-shadow: 0 0 0 0.25rem rgba(122, 121, 120, 0.5); }
+  .btn-check:checked + .btn-outline-color4,
+  .btn-check:active + .btn-outline-color4, .btn-outline-color4:active, .btn-outline-color4.active, .btn-outline-color4.dropdown-toggle.show {
+    color: #000;
+    background-color: #7A7978;
+    border-color: #7A7978; }
+    .btn-check:checked + .btn-outline-color4:focus,
+    .btn-check:active + .btn-outline-color4:focus, .btn-outline-color4:active:focus, .btn-outline-color4.active:focus, .btn-outline-color4.dropdown-toggle.show:focus {
+      box-shadow: 0 0 0 0.25rem rgba(122, 121, 120, 0.5); }
+  .btn-outline-color4:disabled, .btn-outline-color4.disabled {
+    color: #7A7978;
     background-color: transparent; }
 
 .btn-outline-primary {
@@ -3728,6 +3778,13 @@ textarea.form-control-lg {
   .alert-color3 .alert-link {
     color: #0e4235; }
 
+.alert-color4 {
+  color: #494948;
+  background-color: #e4e4e4;
+  border-color: #d7d7d7; }
+  .alert-color4 .alert-link {
+    color: #3a3a3a; }
+
 .alert-primary {
   color: #084298;
   background-color: #cfe2ff;
@@ -4022,6 +4079,17 @@ textarea.form-control-lg {
     color: #fff;
     background-color: #125242;
     border-color: #125242; }
+
+.list-group-item-color4 {
+  color: #494948;
+  background-color: #e4e4e4; }
+  .list-group-item-color4.list-group-item-action:hover, .list-group-item-color4.list-group-item-action:focus {
+    color: #494948;
+    background-color: #cdcdcd; }
+  .list-group-item-color4.list-group-item-action.active {
+    color: #fff;
+    background-color: #494948;
+    border-color: #494948; }
 
 .list-group-item-primary {
   color: #084298;
@@ -4904,6 +4972,11 @@ textarea.form-control-lg {
   .link-color3:hover, .link-color3:focus {
     color: #58d7b7; }
 
+.link-color4 {
+  color: #7A7978; }
+  .link-color4:hover, .link-color4:focus {
+    color: #959493; }
+
 .link-primary {
   color: #0d6efd; }
   .link-primary:hover, .link-primary:focus {
@@ -5224,6 +5297,9 @@ textarea.form-control-lg {
 
 .border-color3 {
   border-color: #2ECDA5 !important; }
+
+.border-color4 {
+  border-color: #7A7978 !important; }
 
 .border-primary {
   border-color: #0d6efd !important; }
@@ -5863,6 +5939,9 @@ textarea.form-control-lg {
 .text-color3 {
   color: #2ECDA5 !important; }
 
+.text-color4 {
+  color: #7A7978 !important; }
+
 .text-primary {
   color: #0d6efd !important; }
 
@@ -5913,6 +5992,9 @@ textarea.form-control-lg {
 
 .bg-color3 {
   background-color: #2ECDA5 !important; }
+
+.bg-color4 {
+  background-color: #7A7978 !important; }
 
 .bg-primary {
   background-color: #0d6efd !important; }

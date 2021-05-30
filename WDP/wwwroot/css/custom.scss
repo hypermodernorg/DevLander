@@ -67,10 +67,10 @@ $dark: $gray-900 !default;
 $color1: #E6FCF4 !default;
 $color2: #D6F7EE !default;
 $color3: #2ECDA5 !default;
-
+$color4: #7A7978 !default;
 // scss-docs-end theme-color-variables
 // scss-docs-start theme-colors-map
-$theme-colors: ( "color1": $color1, "color2": $color2, "color3": $color3, "primary": $primary, "secondary": $secondary, "success": $success, "info": $info, "warning": $warning, "danger": $danger, "light": $light, "dark": $dark ) !default;
+$theme-colors: ( "color1": $color1, "color2": $color2, "color3": $color3, "color4": $color4, "primary": $primary, "secondary": $secondary, "success": $success, "info": $info, "warning": $warning, "danger": $danger, "light": $light, "dark": $dark ) !default;
 // scss-docs-end theme-colors-map
 
 // The contrast ratio to reach against white, to determine if color changes from "light" to "dark". Acceptable values for WCAG 2.0 are 3, 4.5 and 7.

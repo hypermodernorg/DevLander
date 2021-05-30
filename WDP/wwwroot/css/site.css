@@ -3,3 +3,9 @@
     background-repeat:no-repeat;
     background-size:cover;
 }
+.left-side {
+    background-image: url(../images/cats/pexels-pixabay-290263.jpg);
+    background-repeat: no-repeat;
+    background-size:cover;
+
+}
