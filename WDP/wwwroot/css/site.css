@@ -9,3 +9,9 @@
     background-size:cover;
 
 }
+.cat-ignoring {
+    background-image: url(../images/cats/241490b.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-x:right;
+}
