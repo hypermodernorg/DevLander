@@ -5,76 +5,94 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container-fluid">
-    <div class="row p-4">
-        <div class="col-lg-8">
 
-            <h1>Index</h1>
+<div class="row bg-color1" style="padding-top: 200px;">
+    <div class="col">
+        <div class="container-xxl">
 
-            <p>
-                <a asp-action="Create">Create New</a>
-            </p>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Divisor)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Quotient)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Letters)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Created)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Solved)
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        if (item.SolvedBy == Guid.Empty)
-                        {
+            <div class="row">
+                <div class="col text-center">
+                    <h1 class="text-uppercase">Puzzles</h1>
+                    <hr class="bg-color3 mx-auto w-25 border border-color3 border-3" />
+                </div>
+            </div>
+
+
+            <div class="row">
+
+                <div class="col">
+
+                   
+
+                    <p>
+                        <a asp-action="Create">Create New</a>
+                    </p>
+                    <table class="table table-striped table-hover">
+                        <thead>
                             <tr>
-
-
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Divisor)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Quotient)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Letters)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Created)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Solved)
-                                </td>
-                                <td>
-                                    @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
-                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                </td>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Divisor)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Quotient)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Letters)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Created)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Solved)
+                                </th>
+                                <th></th>
                             </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                if (item.SolvedBy == Guid.Empty)
+                                {
+                                    <tr>
 
-                        }
 
-                    }
-                </tbody>
-            </table>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Divisor)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Quotient)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Letters)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Created)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Solved)
+                                        </td>
+                                        <td>
+                                            @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
+                                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                        </td>
+                                    </tr>
 
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+
+
+                </div>
+
+            </div>
 
         </div>
-        <div class="col-lg-4">
 
-        </div>
     </div>
 </div>
+
+
+
