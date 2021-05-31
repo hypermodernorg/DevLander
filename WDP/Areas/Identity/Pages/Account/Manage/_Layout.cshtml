@@ -7,22 +7,68 @@
     {
         Layout = "/Areas/Identity/Pages/_Layout.cshtml";
     }
+    ViewData["Title"] = "Account Management";
 }
 
-<h2>Manage your account</h2>
 
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
+
+<div class="row bg-color1" style="padding-top: 200px; padding-bottom: 100px;">
+
+    <div class="col">
+
+
+        <div class="row">
+            <div class="col">
+                <h1 class="text-uppercase text-center">@ViewData["Title"]</h1>
+                <hr class="bg-color3 mx-auto w-25 border border-color3 border-3" />
+            </div>
         </div>
-        <div class="col-md-9">
-            @RenderBody()
+
+
+        <div class="row">
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-3 bg-color2 p-3">
+                <partial name="_ManageNav" />
+            </div>
+            <div class="col-md-5 bg-color2 p-3">
+                @RenderBody()
+            </div>
+
+
+            <div class="col-md-2">
+
+            </div>
+
+
         </div>
+
+
+
+
     </div>
+
+
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @section Scripts {
     @RenderSection("Scripts", required: false)
