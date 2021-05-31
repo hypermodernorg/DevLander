@@ -21,6 +21,15 @@
             <a id="navbarDropdown" href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" title="Manage" aria-expanded="false">@UserManager.GetUserName(User)</a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a id="navbarDropdown" class="dropdown-item" role="button" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account</a></li>
+                <li><a id="navbarDropdown" class="dropdown-item" role="button" asp-area="Identity" asp-page="/Account/Logout" title="Manage">Log Out</a></li>
+                @*<li>
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                        <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                    </form>
+                </li>*@
+
+
+
                 @if (roleviewcheck.Succeeded) //AuthorizeAsync(User, "ViewRoles"))
                 {
                     <li><a class="dropdown-item" asp-area="Identity" asp-page="/Admin/Roles/Index" title="Roles">View Roles</a></li>
@@ -28,17 +37,17 @@
                 @if (userviewcheck.Succeeded)
                 {
                     <li><a class="dropdown-item" asp-area="Identity" asp-page="/Admin/Users/Index" title="Roles">View Users</a></li>
-                    }
+                }
             </ul>
         </li>
     }
     else
     {
         <li class="nav-item nav">
-            <a class="nav-link text-white-50" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="nav-link" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-white-50" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
 </ul>

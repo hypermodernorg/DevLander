@@ -94,7 +94,8 @@ namespace WDP
 
         public static void SeedUsers (UserManager<ApplicationUser> userManager)
         {
-            if (userManager.FindByEmailAsync("lander083077@gmail.com").Result == null)
+            //if (userManager.FindByEmailAsync("lander083077@gmail.com").Result == null)
+            if (userManager.FindByNameAsync("Admin").Result == null)
             {
                 ApplicationUser user = new ApplicationUser();
                 user.UserName = "Admin";
