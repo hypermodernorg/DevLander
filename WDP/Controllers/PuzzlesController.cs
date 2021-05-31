@@ -16,17 +16,29 @@ namespace WDP.Controllers
     {
         private readonly PuzzleContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
 
-        public PuzzlesController(PuzzleContext context, UserManager<ApplicationUser> userManager)
+        public PuzzlesController(PuzzleContext context, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [Authorize(Roles = "Administrator, MemberPlus, Member")]
         public async Task<IActionResult> Index()
         {
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+      
+           
+            if (currentUser.IsInRole("Administrator"))
+            {
+                ViewData["Administrator"] = true;
+            }
+
+
+
             return View(await _context.Puzzles.ToListAsync());
         }
 
