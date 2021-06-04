@@ -260,11 +260,62 @@ namespace WDP.Controllers
             return View();
         }
 
+        //Scramble the letters
+        public List<char> Scramble(List<char> PhraseList)
+        {
+            Random rand = new();
+            int n = PhraseList.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rand.Next(n + 1);
+                char value = PhraseList[k];
+                PhraseList[k] = PhraseList[n];
+                PhraseList[n] = value;
+            }
+            return PhraseList;
+        }
 
+        //Add More Letters
+        public List<char> AddLetters(List<char> PhraseList)
+        {
+            var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            Random rand = new();
+            var plc = PhraseList.Count;
+
+            // Remove each letter of the phrase from the alphabet
+            foreach (var pl in PhraseList)
+            {
+                alphabet = alphabet.Replace(pl.ToString(), "");
+                Console.WriteLine(alphabet);
+            }
+
+            for (int i = plc; i < 10; i++)
+            {
+                var x = rand.Next(alphabet.Length - 1);
+                PhraseList.Add(alphabet[x]);
+                alphabet.Replace(alphabet[x].ToString(), "");
+                Console.WriteLine(new string(PhraseList.ToArray()));
+            }
+
+            return PhraseList;
+        }
+
+        // Remove excess letters
+        public List<char> RemoveLetters(List<char> PhraseList)
+        {
+            Random rand = new();
+            int iRemove = PhraseList.Count - 10;
+
+            for(int i=0; i<iRemove; i++)
+            {
+                PhraseList.RemoveAt(rand.Next(PhraseList.Count));
+            }
+            return PhraseList;
+        }
 
         public string MakeLettersFromPhrase(string Phrase)
         {
-
             Random rand = new();
             Phrase = Phrase.Replace(" ", ""); // Get rid of the spaces.
             var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -272,43 +323,23 @@ namespace WDP.Controllers
             var PhraseList = Phrase.Distinct().ToList();
             char[] fakeArray = new char[10];
             List<char> chars = fakeArray.ToList();
-
-            // Remove each letter of the phrase from the alphabet
+            
+            // If less than 10 letters, add some.
             if (PhraseList.Count < 10)
             {
-                foreach (var pl in PhraseList)
-                {
-                    alphabet = alphabet.Replace(pl.ToString(), "");
-                }
-                var plc = PhraseList.Count;
-
-                for (int i = plc; i<10; i++)
-                {
-                    var x = rand.Next(alphabet.Length - 1);
-                    PhraseList.Add(alphabet[x]);
-                    alphabet.Replace(alphabet[x].ToString(), "");
-                }
-
-
+                PhraseList = AddLetters(PhraseList);
             }
 
-            
-
-
-            foreach (var number in numbers)
+            // If more than 10 letters, remove some
+            if (PhraseList.Count > 10)
             {
-
-
+                PhraseList = RemoveLetters(PhraseList);
             }
 
+            // If exactly 10 characters, just continue as normal.
 
-
-
-
-            Phrase = PhraseList.ToString();
-
-            return Phrase;
-
+            PhraseList = Scramble(PhraseList); //scramble the letters.
+            return new string(PhraseList.ToArray());
         }
 
 
