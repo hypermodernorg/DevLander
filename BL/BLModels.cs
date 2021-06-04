@@ -14,9 +14,9 @@ namespace BL
         public string Divisor { get; set; } // Left part.
         public string Quotient { get; set; } // Top part.
         public string Letters { get; set; } // Letters in order of 0-9
+        public string Phrase { get; set; }
         public DateTime Created { get; set; } // When it was created.
         public DateTime? Solved { get; set; } // When it was solved.
-
         public List<Comment> Comments { get; set; }
     }
 
@@ -30,6 +30,9 @@ namespace BL
         public Guid Id { get; set; } // Puzzle Id
         public Puzzle Puzzle { get; set; }
     }
+
+
+
 
     [NotMapped]
     public class Answer

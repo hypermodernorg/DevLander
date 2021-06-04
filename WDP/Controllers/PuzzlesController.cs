@@ -36,6 +36,10 @@ namespace WDP.Controllers
             {
                 ViewData["Administrator"] = true;
             }
+            else
+            {
+                ViewData["Administrator"] = false;
+            }
 
 
 
@@ -246,6 +250,104 @@ namespace WDP.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+
+       
+        [Authorize(Roles = "Administrator, MemberPlus")]
+        public async Task<IActionResult> Create2()
+        {
+
+            return View();
+        }
+
+
+
+        public string MakeLettersFromPhrase(string Phrase)
+        {
+
+            Random rand = new();
+            Phrase = Phrase.Replace(" ", ""); // Get rid of the spaces.
+            var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var numbers = Enumerable.Range(0, 10).ToList(); // int list 0-9
+            var PhraseList = Phrase.Distinct().ToList();
+            char[] fakeArray = new char[10];
+            List<char> chars = fakeArray.ToList();
+
+            // Remove each letter of the phrase from the alphabet
+            if (PhraseList.Count < 10)
+            {
+                foreach (var pl in PhraseList)
+                {
+                    alphabet = alphabet.Replace(pl.ToString(), "");
+                }
+                var plc = PhraseList.Count;
+
+                for (int i = plc; i<10; i++)
+                {
+                    var x = rand.Next(alphabet.Length - 1);
+                    PhraseList.Add(alphabet[x]);
+                    alphabet.Replace(alphabet[x].ToString(), "");
+                }
+
+
+            }
+
+            
+
+
+            foreach (var number in numbers)
+            {
+
+
+            }
+
+
+
+
+
+            Phrase = PhraseList.ToString();
+
+            return Phrase;
+
+        }
+
+
+
+        [HttpPost]
+        [Authorize(Roles = "Administrator, MemberPlus")]
+        public async Task<IActionResult> Create2b(string Phrase)
+        {
+            Phrase = Phrase.ToUpper();
+            ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
+            Random rand = new Random();
+            Puzzle aPuzzle = new();
+            aPuzzle.Letters = MakeLettersFromPhrase(Phrase).ToUpper(); // Get the string of letters.
+            aPuzzle.Divisor = rand.Next(99, 999).ToString();
+            aPuzzle.Quotient = rand.Next(10000, 99999).ToString();
+
+            // Seems like most of the remaining  problems are solved just by eliminating the possibility of having,
+            //      zeros in the quotient. The below removes the 0 possibility.
+            while (aPuzzle.Quotient.ToString().Contains("0"))
+            {
+                aPuzzle.Quotient = rand.Next(10000, 99999).ToString();
+            }
+
+
+            aPuzzle.Created = DateTime.Now;
+            aPuzzle.UId = applicationUser.Id;
+            aPuzzle.Seed = Guid.NewGuid();
+
+            if (ModelState.IsValid)
+            {
+                aPuzzle.Id = Guid.NewGuid();
+                _context.Add(aPuzzle);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
 
 
         // GET: Puzzles/Edit/5

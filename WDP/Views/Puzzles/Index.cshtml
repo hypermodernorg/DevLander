@@ -5,6 +5,42 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@functions {
+
+    // function to convert letters to numbers
+    // change bool to false to prevent conversion for testing purposes.
+    // May later convert this to an admin uer option.
+
+    public string ConvertToLetter(string aNumber, string letters)
+    {
+        bool change = true;
+        string changed = "";
+
+        if (change == true)
+        {
+
+            for (int i = 0; i < aNumber.Length; i++)
+            {
+
+                changed += letters[Int32.Parse(aNumber.Substring(i, 1))].ToString();
+
+
+            }
+
+
+
+
+
+        }
+
+        return changed;
+    }
+
+
+}
+
+
+
 
 <div class="row bg-color1" style="padding-top: 200px;">
     <div class="col">
@@ -34,6 +70,17 @@
 
                     }
 
+                    @{
+
+                        if ((bool)ViewData["Administrator"])
+                        {
+                            <p>
+                                <a asp-action="Create2">Create ++</a>
+                            </p>
+                        }
+
+                    }
+
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
@@ -43,9 +90,7 @@
                                 <th>
                                     @Html.DisplayNameFor(model => model.Quotient)
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Letters)
-                                </th>
+
                                 <th>
                                     @Html.DisplayNameFor(model => model.Created)
                                 </th>
@@ -61,13 +106,11 @@
 
 
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Divisor)
+
+                                            @ConvertToLetter(item.Divisor, item.Letters)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Quotient)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Letters)
+                                            @ConvertToLetter(item.Quotient, item.Letters)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Created)
