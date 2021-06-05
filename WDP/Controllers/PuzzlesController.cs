@@ -363,7 +363,7 @@ namespace WDP.Controllers
                 aPuzzle.Quotient = rand.Next(10000, 99999).ToString();
             }
 
-
+            aPuzzle.Phrase = Phrase;
             aPuzzle.Created = DateTime.Now;
             aPuzzle.UId = applicationUser.Id;
             aPuzzle.Seed = Guid.NewGuid();
