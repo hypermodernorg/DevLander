@@ -15,6 +15,7 @@ namespace BL
         public string Quotient { get; set; } // Top part.
         public string Letters { get; set; } // Letters in order of 0-9
         public string Phrase { get; set; }
+        public string Hint { get; set; }
         public DateTime Created { get; set; } // When it was created.
         public DateTime? Solved { get; set; } // When it was solved.
         public List<Comment> Comments { get; set; }
@@ -31,7 +32,12 @@ namespace BL
         public Puzzle Puzzle { get; set; }
     }
 
-
+    [NotMapped]
+    public class Phrase
+    {
+        public Guid id { get; set; }
+        public string Words { get; set; }
+    }
 
 
     [NotMapped]

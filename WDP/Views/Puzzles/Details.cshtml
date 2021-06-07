@@ -57,9 +57,16 @@
 
     <div class="col">
         <div class="row">
-            <div class="col">
+            <div class="col text-center">
                 <h1 class="text-uppercase text-center">@ViewData["Title"]</h1>
                 <hr class="bg-color3 mx-auto w-25 border border-color3 border-3" />
+               @if (ViewData["Username"] != null)
+                {
+                   <h3>First solved by @ViewData["Username"] on @ViewData["SolvedDate"]</h3>
+                }
+
+
+
             </div>
         </div>
 
@@ -291,122 +298,142 @@
 
                 @* Side Col *@
 
-            <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
             </div>
 
-            <div class="row mt-3 p-5 bg-color2">
+            <div class="row mt-3 mb-3 p-5 bg-color2">
                 <div class="col">
 
-                    @{
-                        if (Model.Phrase == null)
-                        {
 
-                            // User input: First lets shuffle the letters
-                            var shuffleLetters = "";
-                            {
-                                Random rand = new Random();
-                                var alphebet = letters.ToCharArray().ToList();
+                    @if (Model.Phrase == null)
+                    {
+                        <div class="row">
+                            <div class="col">
 
-                                for (int i = 0; i < 10; i++) // Get 9 letters
-                                {
-                                    var n = rand.Next(0, 10 - i); // Get a random letter, decreasing number of available letters each time by 1.
-                                    shuffleLetters += alphebet[n]; // Add the letter to the string of letters
-                                    alphebet.Remove(alphebet[n]); //Remove letter so it cannot be selected again.
-                                }
-                            }
-
-                            for (int i = 0; i < shuffleLetters.Length; i++)
-                            {
-                          
-                                if (i < 5)
-                                {
-                                    <div class="col-md-6">
-                                        <div class="input-group mb-3">
-                                            <label class="input-group-text" for="inputGroupSelect-@shuffleLetters.Substring(i, 1)">@shuffleLetters.Substring(i, 1)</label>
-                                            <select class="form-select letters" id="inputGroupSelect-@shuffleLetters.Substring(i, 1)">
-                                                <option selected></option>
-                                                <option value="0">0</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                }
-                                if (i >= 5)
-                                {
-                                    <div class="col-md-6">
-                                        <div class="input-group mb-3">
-                                            <label class="input-group-text" for="inputGroupSelect-@shuffleLetters.Substring(i, 1)">@shuffleLetters.Substring(i, 1)</label>
-                                            <select class="form-select letters" id="inputGroupSelect-@shuffleLetters.Substring(i, 1)">
-                                                <option selected></option>
-                                                <option value="0">0</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                }
-             
-
-                            }
-                        }
-
-
-
-                        else
-                        {
-                            var wordsArray = Model.Phrase.Split(); // split phrase into words
-
-                            foreach (var word in wordsArray)
-                            {
-                                <span class="p-2 fs-4">
-
-                                    @foreach (var letter in word.ToCharArray())
+                                @{
+                                    // User input: First lets shuffle the letters
+                                    var shuffleLetters = "";
                                     {
+                                        Random rand = new Random();
+                                        var alphebet = letters.ToCharArray().ToList();
 
-
-                                        @ConvertToNumber(letter.ToString(), letters)
-
-
+                                        for (int i = 0; i < 10; i++) // Get 9 letters
+                                        {
+                                            var n = rand.Next(0, 10 - i); // Get a random letter, decreasing number of available letters each time by 1.
+                                            shuffleLetters += alphebet[n]; // Add the letter to the string of letters
+                                            alphebet.Remove(alphebet[n]); //Remove letter so it cannot be selected again.
+                                        }
                                     }
 
-                                </span>
+                                    for (int i = 0; i < shuffleLetters.Length; i++)
+                                    {
 
-                            }
-                        }
+                                        if (i < 5)
+                                        {
+                                            <div class="col-md-6">
+                                                <div class="input-group mb-3">
+                                                    <label class="input-group-text" for="inputGroupSelect-@shuffleLetters.Substring(i, 1)">@shuffleLetters.Substring(i, 1)</label>
+                                                    <select class="form-select letters" id="inputGroupSelect-@shuffleLetters.Substring(i, 1)">
+                                                        <option selected></option>
+                                                        <option value="0">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        }
+                                        if (i >= 5)
+                                        {
+                                            <div class="col-md-6">
+                                                <div class="input-group mb-3">
+                                                    <label class="input-group-text" for="inputGroupSelect-@shuffleLetters.Substring(i, 1)">@shuffleLetters.Substring(i, 1)</label>
+                                                    <select class="form-select letters" id="inputGroupSelect-@shuffleLetters.Substring(i, 1)">
+                                                        <option selected></option>
+                                                        <option value="0">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col text-center">
+                                <button type="button" class="btn btn-primary btn-sm mb-3" onclick="CheckAnswer('@Model.Id')">Check Answers</button>
+                            </div>
+                        </div>
+
+
                     }
 
-                </div>
-                <div class="row">
+                    else
+                    {
+                        <div class="row mb-3">
+                            <div class="col text-center">
+                                <span class="fs-5">Hint/Category/Topic: @Model.Hint</span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col text-center">
 
-                    <div class="col text-center">
-                        <button type="button" class="btn btn-primary btn-sm mb-3" onclick="CheckAnswer('@Model.Id')">Check Answers</button>
-                    </div>
-                </div>
+                                @{
+                                    var wordsArray = Model.Phrase.Split(); // split phrase into words
 
+                                }
+                                <span class="fs-6 p-2">Answer Key: </span>
+                                @foreach (var word in wordsArray)
+                                {
+
+                                    <span class="p-2 fs-6">
+
+                                        @foreach (var letter in word.ToCharArray())
+                                        {
+                                            @ConvertToNumber(letter.ToString(), letters)
+                                        }
+
+                                    </span>
+
+                                }
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+
+                            <div class="col-lg-3"></div>
+                            <div class="col-lg-6 ">
+                                <div class="input-group mb-3">
+                                    <button class="btn btn-color1 btn-outline-secondary" type="button" id="button-addon1" onclick="CheckPhrase('@Model.Id')">Key Translation</button>
+                                    <input id="checkPhrase" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                                </div>
+                            </div>
+                            <div class="col-lg-3"></div>
+                        </div>
+
+                    }
+
+
+                </div>
             </div>
-
-
         </div>
-
-
     </div>
-
 </div>
 
 

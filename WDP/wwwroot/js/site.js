@@ -1,4 +1,42 @@
-﻿function CheckAnswer(id) {
+﻿
+
+function CheckPhrase(id) {
+    var phrase = document.getElementById("checkPhrase").value;
+
+    fetch('/puzzles/Checkp/', {
+
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+            id: id,
+            Words: phrase
+        })
+    }).then(function (response) {
+        if (response.ok) {
+        
+            return response.json();
+        }
+        return Promise.reject(response);
+    }).then(data => {
+
+
+        document.getElementById("messageReturned").innerHTML = data;
+        setTimeout(ClearHeading, 3000);
+
+        function ClearHeading() {
+            document.getElementById("messageReturned").innerHTML = "";
+        }
+
+    }).catch(function (error) {
+        console.warn('Something went wrong with CheckPhrase', error);
+    });
+
+}
+
+
+function CheckAnswer(id) {
 
     // Get all the elements with the class: letters
     var lettersGroup = document.getElementsByClassName("letters");

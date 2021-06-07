@@ -30,24 +30,67 @@ namespace WDP.Controllers
         public async Task<IActionResult> Index()
         {
             System.Security.Claims.ClaimsPrincipal currentUser = this.User;
-      
-           
-            if (currentUser.IsInRole("Administrator"))
-            {
-                ViewData["Administrator"] = true;
-            }
-            else
-            {
-                ViewData["Administrator"] = false;
-            }
+            ViewData["Administrator"] = currentUser.IsInRole("Administrator");
+
+            var puz = await _context.Puzzles.ToListAsync();
+            var unsolved = puz.Where(s => s.Solved == null)
+                .OrderBy(t => t.Created)
+                .ToList();
 
 
+            return View(unsolved);
+        }
 
-            return View(await _context.Puzzles.ToListAsync());
+        [Authorize(Roles = "Administrator, MemberPlus, Member")]
+        public async Task<IActionResult> Solved()
+        {
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            ViewData["Administrator"] = currentUser.IsInRole("Administrator");
+
+            var puz = await _context.Puzzles.ToListAsync();
+            var solved = puz.Where(s => s.Solved != null)
+                .OrderBy(t => t.Created)
+                .ToList();
+
+
+            return View(solved);
         }
 
 
+        [HttpPost]
+        public async Task<JsonResult> Checkp([FromBody] Phrase phrase)
+        {
+            var message = "";
+            var puzzle = await _context.Puzzles
+                .FirstOrDefaultAsync(m => m.Id == phrase.id);
+            if (string.Equals(puzzle.Phrase.Replace(" ", ""), phrase.Words.Replace(" ", ""), StringComparison.OrdinalIgnoreCase))
+            {
+                message = "Congratulations, you solved the puzzle!";
 
+                ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
+
+
+                if (applicationUser != null)
+                {
+                    puzzle.Solved = DateTime.Now;
+                    puzzle.SolvedBy = applicationUser.Id;
+
+                    _context.Update(puzzle);
+                    await _context.SaveChangesAsync();
+
+                }
+
+            }
+            else
+            {
+                message = "Obviously your cat distracted you.";
+            }
+
+
+
+
+            return Json(message);
+        }
 
         // Check the user submitted answer
         [HttpPost]
@@ -185,6 +228,9 @@ namespace WDP.Controllers
         [Authorize(Roles = "Administrator, MemberPlus, Member")]
         public async Task<IActionResult> Details(Guid? id)
         {
+
+            
+
             if (id == null)
             {
                 return NotFound();
@@ -196,6 +242,17 @@ namespace WDP.Controllers
             {
                 return NotFound();
             }
+
+            if (puzzle.Solved != null)
+            {
+                var userId = puzzle.SolvedBy;
+                var user = await _userManager.FindByIdAsync(userId.ToString());
+                ViewData["Username"] = user.UserName;
+                ViewData["SolvedDate"] = puzzle.Solved;
+            }
+
+
+
             return View(puzzle);
         }
 
@@ -346,7 +403,7 @@ namespace WDP.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Administrator, MemberPlus")]
-        public async Task<IActionResult> Create2b(string Phrase)
+        public async Task<IActionResult> Create2b(string Phrase, string Hint)
         {
             Phrase = Phrase.ToUpper();
             ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
@@ -364,6 +421,7 @@ namespace WDP.Controllers
             }
 
             aPuzzle.Phrase = Phrase;
+            aPuzzle.Hint = Hint;
             aPuzzle.Created = DateTime.Now;
             aPuzzle.UId = applicationUser.Id;
             aPuzzle.Seed = Guid.NewGuid();

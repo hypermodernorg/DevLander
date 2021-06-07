@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<BL.Puzzle>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Solved Puzzles";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -48,7 +48,7 @@
 
             <div class="row">
                 <div class="col text-center">
-                    <h1 class="text-uppercase">Puzzles</h1>
+                    <h1 class="text-uppercase">@ViewData["Title"]</h1>
                     <hr class="bg-color3 mx-auto w-25 border border-color3 border-3" />
                 </div>
             </div>
@@ -101,33 +101,31 @@
                             @foreach (var item in Model)
                             {
 
-                                    <tr>
+                            <tr>
 
 
-                                        <td>
+                                <td>
 
-                                            @ConvertToLetter(item.Divisor, item.Letters)
-                                        </td>
-                                        <td>
-                                            @ConvertToLetter(item.Quotient, item.Letters)
-                                        </td>
-                                        <td>@Html.DisplayFor(modelItem => item.Hint)</td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Created)
-                                        </td>
-                                        <td>
-                                            @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
-                                            <a asp-action="Details" asp-route-id="@item.Id">View</a>
+                                    @ConvertToLetter(item.Divisor, item.Letters)
+                                </td>
+                                <td>
+                                    @ConvertToLetter(item.Quotient, item.Letters)
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.Hint)</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Created)
+                                </td>
+                                <td>
+                                    @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
+                                    <a asp-action="Details" asp-route-id="@item.Id">View</a>
+                                    @if ((bool)ViewData["Administrator"] == true)
+                                    {
+                                        <a asp-action="Delete" asp-route-id="@item.Id"> | Delete</a>
+                                    }
+                                </td>
+                            </tr>
 
-                                            @if ((bool)ViewData["Administrator"] == true)
-                                            {
-                                                <a asp-action="Delete" asp-route-id="@item.Id"> | Delete</a>
-                                            }
-
-                                        </td>
-                                    </tr>
-
-                      
+                         
 
                             }
                         </tbody>
