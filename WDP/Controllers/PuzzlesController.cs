@@ -41,7 +41,7 @@ namespace WDP.Controllers
             return View(unsolved);
         }
 
-        [Authorize(Roles = "Administrator, MemberPlus, Member")]
+       
         public async Task<IActionResult> Solved()
         {
             System.Security.Claims.ClaimsPrincipal currentUser = this.User;
